@@ -50,7 +50,7 @@
     /* 快应用特有相关 */
     "mp-weixin" : {
         /* 小程序特有相关 */
-        "appid" : "",
+        "appid" : "wx64e5f45b597ca940",
         "setting" : {
             "urlCheck" : false
         },

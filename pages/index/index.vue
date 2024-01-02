@@ -1,29 +1,21 @@
 <template>
-	<view class="container">
-		
-		<view class="intro">本项目已包含uni ui组件，无需import和注册，可直接使用。在代码区键入字母u，即可通过代码助手列出所有可用组件。光标置于组件名称处按F1，即可查看组件文档。</view>
-		<text class="intro">详见：</text>
-		<uni-link :href="href" :text="href"></uni-link>
-	</view>
+  <view class="container">
+    <text class="intro">首页瀑布流数据（点开可以下载和评论 以及复制这个照片的提示词参数 - 生成同款）</text>
+  </view>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				href: 'https://uniapp.dcloud.io/component/README?id=uniui'
-			}
-		},
-		methods: {
-
-		}
-	}
+export default {
+  data() {
+    return {}
+  },
+  methods: {}
+}
 </script>
 
-<style>
-	.container {
-		padding: 20px;
-		font-size: 14px;
-		line-height: 24px;
-	}
+<style lang="scss">
+.container {
+  margin-top: 300rpx;
+}
+
 </style>
