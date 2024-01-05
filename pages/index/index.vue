@@ -268,6 +268,18 @@
 		border-radius: 15rpx;
 		box-shadow: 0 0 10rpx #ebebeb;
 		background-color: #ffffff;
+		animation: opacityChange 0.5s normal 0.5s forwards;
+		opacity: 0;
+		@keyframes opacityChange {
+		  from {
+		    opacity: 0;
+		  }
+		
+		  to {
+		    opacity: 1;
+		  }
+		}
+		
 		.introduce{
 			width: 100%;
 			box-sizing: border-box;
