@@ -1,6 +1,10 @@
 <template>
-	<view class="navbar" :style="{height:BarHeight+navBareight +'px'}"></view>
-	<swiper class="swiper" :indicator-dots="false" :autoplay="true"  :interval="3000" :duration="1000">
+	<view class="navbar" :style="{height:BarHeight+navBareight +'px'}">
+		<view class="narbar-content" :style="{height:navBareight+'px'}">
+			<uv-icon name="search" size="28" color="#444548"></uv-icon>
+		</view>
+	</view>
+	<swiper class="swiper" :indicator-dots="false" :autoplay="true" :interval="3000" :duration="1000">
 		<swiper-item>
 			<view class="swiper-item"></view>
 		</swiper-item>
@@ -8,11 +12,11 @@
 			<view class="swiper-item"></view>
 		</swiper-item>
 	</swiper>
-	<view class="screen">
+	<view class="screen" :style="{'top':BarHeight+navBareight+'px'}">
 		<view></view>
 		<view class="text">
 			<p class="name">筛选</p>
-			<uv-icon name="arrow-down" size="18" color="#909399"></uv-icon>
+			<uv-icon name="arrow-down" size="15" color="#909399"></uv-icon>
 		</view>
 	</view>
 	<view class="padding-top-lg">
@@ -44,7 +48,7 @@
 		onReachBottom
 	} from '@dcloudio/uni-app'
 	const _this = getCurrentInstance();
-	
+
 	const navBareight = ref()
 	const BarHeight = ref()
 	let {
@@ -59,8 +63,8 @@
 	} = uni.getMenuButtonBoundingClientRect()
 	navBareight.value = (bottom - statusBarHeight) + (top - statusBarHeight)
 
-	
-	
+
+
 	const data = reactive({
 		list: [],
 		column: 2,
@@ -178,6 +182,7 @@
 					});
 				}).exec(() => {
 					if (data.column <= heightArr.length) {
+						console.log(getMin(heightArr, 'height'))
 						resolve(getMin(heightArr, 'height'));
 					}
 				});
@@ -214,54 +219,96 @@
 <style scoped lang="scss">
 	.navbar {
 		width: 100vw;
+		position: relative;
+		position: sticky;
+		z-index: 5;
+		top: 0;
+		left: 0;
+		background-color: white;
+
+		.narbar-content {
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			box-sizing: border-box;
+			padding: 0 10rpx;
+			// background-color: skyblue;
+			display: flex;
+			align-items: center;
+		}
 	}
-	.swiper{
+
+	.swiper {
 		width: 730rpx;
 		height: 300rpx;
 		margin: 0 auto;
 		margin-top: 10rpx;
-		margin-bottom: 15rpx;
-		.swiper-item{
+
+		.swiper-item {
 			width: 730rpx;
 			height: 300rpx;
 			background-color: #dcdcdc;
 			border-radius: 20rpx;
 		}
 	}
-	.screen{
-		width: 730rpx;
+
+	.screen {
+		padding: 15rpx 10rpx;
+		box-sizing: border-box;
+		width: 750rpx;
 		margin: 0 auto;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		.text{
+		position: sticky;
+		z-index: 5;
+		left: 0;
+		background-color: #f8f8f8;
+
+		.text {
 			.name {
 				margin-right: 20rpx;
 			}
+
 			font-size:26rpx;
 			display: flex;
 			align-items: center;
 		}
 	}
-	.padding-top-lg{
+
+	.padding-top-lg {
 		width: 730rpx;
 		margin: 0 auto;
 	}
+
 	.waterfalls-flow {
+		position: relative;
+		display: flex;
+		min-height: 200rpx;
+
 		&-column {
-			float: left;
+			// float: left;
+			// display: inline-block;
+
 			padding: 0 0 200upx;
+			align-self: flex-start;
+		}
+
+		#waterfalls_flow_column_1 {
+			// float: left;
+			// position: absolute;
+			// top: 0;
+			// left: 0;
+		}
+
+		#waterfalls_flow_column_2 {
+			// position: absolute;
+			// top: 0;
+			// right: 0;
+			// float: left;
 		}
 	}
-	.background{
-		width: 100vw;
-		height: 100vh;
-		position: fixed;
-		left: 0;
-		top: 0;
-		background-color: #fafafa;
-		z-index: -1;
-	}
+
 	.column-value {
 		margin-top: 20rpx;
 		width: 100%;
@@ -270,28 +317,28 @@
 		background-color: #ffffff;
 		animation: opacityChange 0.5s normal 0.5s forwards;
 		opacity: 0;
+
 		@keyframes opacityChange {
-		  from {
-		    opacity: 0;
-		  }
-		
-		  to {
-		    opacity: 1;
-		  }
+			from {
+				opacity: 0;
+			}
+
+			to {
+				opacity: 1;
+			}
 		}
-		
-		.introduce{
+
+		.introduce {
 			width: 100%;
 			box-sizing: border-box;
 			padding: 15rpx;
 			margin: 0;
 		}
+
 		.imgsty {
 			width: 100%;
 			border-radius: 10rpx;
 			margin: 0;
 		}
 	}
-
-	
 </style>
