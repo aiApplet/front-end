@@ -1,5 +1,20 @@
 <template>
-	<view class="background"></view>
+	<view class="navbar" :style="{height:BarHeight+navBareight +'px'}"></view>
+	<swiper class="swiper" :indicator-dots="false" :autoplay="true"  :interval="3000" :duration="1000">
+		<swiper-item>
+			<view class="swiper-item"></view>
+		</swiper-item>
+		<swiper-item>
+			<view class="swiper-item"></view>
+		</swiper-item>
+	</swiper>
+	<view class="screen">
+		<view></view>
+		<view class="text">
+			<p class="name">筛选</p>
+			<uv-icon name="arrow-down" size="18" color="#909399"></uv-icon>
+		</view>
+	</view>
 	<view class="padding-top-lg">
 		<view class="waterfalls-flow">
 			<view v-for="(item,index) in data.column" :key="index" class="waterfalls-flow-column"
@@ -29,6 +44,23 @@
 		onReachBottom
 	} from '@dcloudio/uni-app'
 	const _this = getCurrentInstance();
+	
+	const navBareight = ref()
+	const BarHeight = ref()
+	let {
+		statusBarHeight,
+		windowWidth
+	} = uni.getSystemInfoSync()
+	BarHeight.value = statusBarHeight
+	let {
+		top,
+		bottom,
+		left
+	} = uni.getMenuButtonBoundingClientRect()
+	navBareight.value = (bottom - statusBarHeight) + (top - statusBarHeight)
+
+	
+	
 	const data = reactive({
 		list: [],
 		column: 2,
@@ -180,13 +212,45 @@
 </script>
 
 <style scoped lang="scss">
+	.navbar {
+		width: 100vw;
+	}
+	.swiper{
+		width: 730rpx;
+		height: 300rpx;
+		margin: 0 auto;
+		margin-top: 10rpx;
+		margin-bottom: 15rpx;
+		.swiper-item{
+			width: 730rpx;
+			height: 300rpx;
+			background-color: #dcdcdc;
+			border-radius: 20rpx;
+		}
+	}
+	.screen{
+		width: 730rpx;
+		margin: 0 auto;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		.text{
+			.name {
+				margin-right: 20rpx;
+			}
+			font-size:26rpx;
+			display: flex;
+			align-items: center;
+		}
+	}
+	.padding-top-lg{
+		width: 730rpx;
+		margin: 0 auto;
+	}
 	.waterfalls-flow {
-		padding-top: 50upx;
-		
 		&-column {
 			float: left;
 			padding: 0 0 200upx;
-			
 		}
 	}
 	.background{

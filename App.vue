@@ -15,6 +15,7 @@
 
 <style lang="scss">
 	/*每个页面公共css */
+	@import '@/uni_modules/uv-ui-tools/index.scss';
 	@import '@/uni_modules/uni-scss/index.scss';
 	/* #ifndef APP-NVUE */
 	// 设置整个项目的背景色
