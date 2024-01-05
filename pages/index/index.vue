@@ -49,6 +49,7 @@
 	} from '@dcloudio/uni-app'
 	const _this = getCurrentInstance();
 
+	// 顶部安全距离
 	const navBareight = ref()
 	const BarHeight = ref()
 	let {
@@ -63,6 +64,7 @@
 	} = uni.getMenuButtonBoundingClientRect()
 	navBareight.value = (bottom - statusBarHeight) + (top - statusBarHeight)
 
+	
 
 
 	const data = reactive({
@@ -200,7 +202,8 @@
 	onMounted(() => {
 		initValue(0);
 	})
-
+	
+	// 触底加载
 	onReachBottom(() => {
 		initValue(0);
 	})
@@ -262,6 +265,7 @@
 		justify-content: space-between;
 		position: sticky;
 		z-index: 5;
+		border-radius: 0 0 10rpx 10rpx;
 		left: 0;
 		background-color: #f8f8f8;
 

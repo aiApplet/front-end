@@ -11,9 +11,8 @@
     {
       "path": "pages/draw/index",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "绘图",
         "enablePullDownRefresh": false,
-        "navigationStyle": "custom"
       }
     },
     {
