@@ -1,8 +1,29 @@
 <script>
+	import {
+		user
+	} from '@/utils/all.js'
 	export default {
 		onLaunch: function() {
-			console.warn('当前组件仅支持 uni_modules 目录结构 ，请升级 HBuilderX 到 3.1.0 版本以上！')
-			console.log('App Launch')
+			let that = this
+			uni.login({
+				provider: "weixin",
+				success: function(res) {
+					user({
+						code: res.code
+					}).then(res => {
+						uni.setStorage({
+							key: "userinfo",
+							data: res.data.result,
+							success() {
+								
+							}
+						})
+					})
+				},
+				fail(res) {
+					console.log(res);
+				}
+			})
 		},
 		onShow: function() {
 			console.log('App Show')

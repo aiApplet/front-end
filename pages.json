@@ -12,7 +12,7 @@
       "path": "pages/draw/index",
       "style": {
         "navigationBarTitleText": "绘图",
-        "enablePullDownRefresh": false,
+        "enablePullDownRefresh": false
       }
     },
     {
