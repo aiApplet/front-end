@@ -5,6 +5,16 @@ import {
 
 
 
+
+
+export function loras(config) {
+	return postRequest({
+		url: 'api/loras/',
+		method: 'get',
+		data: config
+	})
+}
+
 export function user(config) {
 	return postRequest({
 		url: 'api/user/',
