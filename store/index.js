@@ -3,7 +3,8 @@ import {
 	defineStore
 } from 'pinia'
 import {
-	pictures
+	pictures,
+	carousel_figure
 } from '@/utils/all.js'
 import {
 	getCurrentInstance,
@@ -19,6 +20,7 @@ export const useIndexStore = defineStore('index', {
 				column: 2,
 				columnSpace: 1,
 			},
+			swiperList:[],
 			_this: {},
 			navBareight: 0,
 			BarHeight: 0,
@@ -29,88 +31,20 @@ export const useIndexStore = defineStore('index', {
 	actions: {
 		// 初始化
 		init() {
-			// 数据赋值
+			// 展示列表
 			pictures({
-				page:1,
-				size:10
-			}).then(res=>{
-				
+				page: 1,
+				size: 10
+			}).then(res => {
+				this.data.list = res.data.result.results
+				this.initValue(0);
 			})
-			this.data.list = [{
-					image: 'https://via.placeholder.com/200x500.png/ff0000',
-					title: '我是标题1',
-					desc: '描述描述描述描述描述描述描述描述1'
-				},
-				{
-					image: 'https://via.placeholder.com/200x200.png/2878ff',
-					title: '我是标题2',
-					desc: '描述描述描述描述描述描述描述描述2'
-				},
-				{
-					image: 'https://via.placeholder.com/200x100.png/FFB6C1',
-					title: '我是标题3',
-					desc: '描述描述描述描述描述描述描述描述3'
-				},
-				{
-					image: 'https://via.placeholder.com/200x300.png/9400D3',
-					title: '我是标题4',
-					desc: '描述描述描述描述描述描述描述描述4'
-				},
-				{
-					image: 'https://via.placeholder.com/100x240.png/B0E0E6',
-					title: '我是标题5',
-					desc: '描述描述描述描述描述描述描述描述5'
-				},
-				{
-					image: 'https://via.placeholder.com/140x280.png/7FFFAA',
-					title: '我是标题6',
-					desc: '描述描述描述描述描述描述描述描述6'
-				},
-				{
-					image: 'https://via.placeholder.com/40x60.png/EEE8AA',
-					title: '我是标题7',
-					desc: '描述描述描述描述描述描述描述描述7'
-				},
-				{
-					image: 'https://via.placeholder.com/200x500.png/ff0000',
-					title: '我是标题1',
-					desc: '描述描述描述描述描述描述描述描述1'
-				},
-				{
-					image: 'https://via.placeholder.com/200x200.png/2878ff',
-					title: '我是标题2',
-					desc: '描述描述描述描述描述描述描述描述2'
-				},
-				{
-					image: 'https://via.placeholder.com/200x100.png/FFB6C1',
-					title: '我是标题3',
-					desc: '描述描述描述描述描述描述描述描述3'
-				},
-				{
-					image: 'https://via.placeholder.com/200x300.png/9400D3',
-					title: '我是标题4',
-					desc: '描述描述描述描述描述描述描述描述4'
-				},
-				{
-					image: 'https://via.placeholder.com/100x240.png/B0E0E6',
-					title: '我是标题5',
-					desc: '描述描述描述描述描述描述描述描述5'
-				},
-				{
-					image: 'https://via.placeholder.com/140x280.png/7FFFAA',
-					title: '我是标题6',
-					desc: '描述描述描述描述描述描述描述描述6'
-				},
-				{
-					image: 'https://via.placeholder.com/40x60.png/EEE8AA',
-					title: '我是标题7',
-					desc: '描述描述描述描述描述描述描述描述7'
-				},
-			];
-			for (let i = 1; i <= this.data.column; i++) {
-				this.data[`column_${i}`] = [];
-			}
-
+			// 轮播图
+			carousel_figure().then(res=>{
+				this.swiperList= res.data.result
+			})
+		},
+		getconfiguration() {
 			// 顶部安全距离
 			let {
 				statusBarHeight,
@@ -126,6 +60,7 @@ export const useIndexStore = defineStore('index', {
 			this.navBareight = (bottom - statusBarHeight) + (top - statusBarHeight)
 
 			this._this = getCurrentInstance();
+			
 
 			this.w = computed(() => {
 				const column_rate = `${100 / this.data.column - (+this.data.columnSpace)}%`;
@@ -135,6 +70,16 @@ export const useIndexStore = defineStore('index', {
 				const column_margin =
 					`${(100-(100 / this.data.column - (+this.data.columnSpace)).toFixed(5)*this.data.column)/(this.data.column-1)}%`;
 				return column_margin;
+			})
+
+			for (let i = 1; i <= this.data.column; i++) {
+				this.data[`column_${i}`] = [];
+			}
+		},
+		// 轮播图跳转
+		swiperlink(e){
+			uni.navigateTo({
+				url:e
 			})
 		},
 		// 获取最小值的对象

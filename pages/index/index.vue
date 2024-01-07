@@ -5,11 +5,8 @@
 		</view>
 	</view>
 	<swiper class="swiper" :indicator-dots="false" :autoplay="true" :interval="3000" :duration="1000">
-		<swiper-item>
-			<view class="swiper-item"></view>
-		</swiper-item>
-		<swiper-item>
-			<view class="swiper-item"></view>
+		<swiper-item v-for="(e,i) in IndexStore.swiperList" :key="i" @click="IndexStore.link(e.link)">
+			<view class="swiper-item" :style="{backgroundImage:'url('+e.image+')'}"></view>
 		</swiper-item>
 	</swiper>
 	<view class="screen" :style="{'top':BarHeight+IndexStore.navBareight+'px'}">
@@ -22,12 +19,13 @@
 	<view class="padding-top-lg">
 		<view class="waterfalls-flow">
 			<view v-for="(item,index) in IndexStore.data.column" :key="index" class="waterfalls-flow-column"
-				:style="{'width':IndexStore.w,'margin-left':index==0?0:IndexStore.m}" :id="`waterfalls_flow_column_${index+1}`">
+				:style="{'width':IndexStore.w,'margin-left':index==0?0:IndexStore.m}"
+				:id="`waterfalls_flow_column_${index+1}`">
 				<view class="column-value" v-for="(item2,index2) in IndexStore.data[`column_${index+1}`]" :key="index2">
-					<image :src="item2.image" mode="widthFix" @load="IndexStore.imgLoad(item2)" @error="IndexStore.imgError(item2)"
-						class="imgsty"></image>
+					<image :src="item2.image" mode="widthFix" @load="IndexStore.imgLoad(item2)"
+						@error="IndexStore.imgError(item2)" class="imgsty"></image>
 					<view class="introduce">
-						{{item2.title}}
+						{{item2.nickname}}
 					</view>
 				</view>
 			</view>
@@ -37,19 +35,30 @@
 
 <script setup>
 	import {
-		onMounted
+		getCurrentInstance
 	} from 'vue';
 	import {
-		onReachBottom
+		onReachBottom,
+		onLoad
 	} from '@dcloudio/uni-app'
-	import { useIndexStore } from '@/store/index'
-	
+	import {
+		useIndexStore
+	} from '@/store/index'
+
 	const IndexStore = useIndexStore()
-	IndexStore.init()
-	
-	onMounted(() => {
-		IndexStore.initValue(0);
+
+	IndexStore.getconfiguration()
+	onLoad(async (options) => {
+		//加载全局变量
+		// 获取vue3全局对象
+		const {
+			proxy
+		} = getCurrentInstance();
+		await proxy.$onLaunched;
+		IndexStore.init()
 	})
+
+
 	// 触底加载
 	onReachBottom(() => {
 		IndexStore.initValue(0);
@@ -85,6 +94,9 @@
 		margin-top: 10rpx;
 
 		.swiper-item {
+			background-repeat: no-repeat;
+			background-position: 50% 50%;
+			background-size: cover;
 			width: 730rpx;
 			height: 300rpx;
 			background-color: #dcdcdc;

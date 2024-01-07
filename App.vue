@@ -1,9 +1,16 @@
 <script>
 	import {
+		getCurrentInstance,
+		ref
+	} from 'vue';
+	import {
 		user
 	} from '@/utils/all.js'
 	export default {
-		onLaunch: function() {
+		onLaunch: async function() {
+			const {
+				proxy
+			} = getCurrentInstance();
 			let that = this
 			uni.login({
 				provider: "weixin",
@@ -15,13 +22,13 @@
 							key: "userinfo",
 							data: res.data.result,
 							success() {
-								
+								proxy.$isResolve();
 							}
 						})
 					})
 				},
 				fail(res) {
-					console.log(res);
+					proxy.$isResolve();
 				}
 			})
 		},
@@ -38,6 +45,7 @@
 	/*每个页面公共css */
 	@import '@/uni_modules/uv-ui-tools/index.scss';
 	@import '@/uni_modules/uni-scss/index.scss';
+
 	/* #ifndef APP-NVUE */
 	// 设置整个项目的背景色
 	page {

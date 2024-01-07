@@ -18,8 +18,8 @@
 			</view>
 		</view>
 		<view class="cueWord">
-			<p>随机一下</p>
-			<p>提示词助手</p>
+			<p @click="DrawStore.random_prompts">随机一下</p>
+			<p @click="openpopup">提示词助手</p>
 		</view>
 		<view class="cueWordList">
 			<view class="cueWordList-item" v-for="(item,index) in DrawStore.cueWordList" :key="index">
@@ -32,7 +32,7 @@
 			</view>
 			<view class="modelList">
 				<view class="modelList-item" v-for="(item,index) in DrawStore.modelList" :key="index">
-					{{item}}
+					{{item.name}}
 				</view>
 				<view class="supplement" v-if="DrawStore.modelList.length%2==0"></view>
 			</view>
@@ -56,6 +56,39 @@
 			</view>
 			<input type="text" :value="DrawStore.seed" class="seedinput" />
 		</view>
+
+		<uv-popup ref="popup" mode="bottom" round="20">
+			<view class="popup">
+				<view class="title">
+					<p class="bi"></p>选择提示词
+				</view>
+				<view class="content">
+					<scroll-view scroll-y="true" class="types">
+						<view @click="DrawStore.promptsChange(item,index)"
+							:class="[{'types-select':DrawStore.promptsIndex==index},'types-item']"
+							v-for="(item,index) in DrawStore.promptsList" :key="index">
+							{{item.name}}
+						</view>
+					</scroll-view>
+					<scroll-view scroll-y="true" class="list">
+						<!-- <view class="list-item" v-for="(item,index) in DrawStore.promptsShowList" :key="index">
+							<p class="list-item-title">{{item.title}}</p>
+							
+						</view> -->
+					</scroll-view>
+				</view>
+				<view class="Auxiliary">
+					<view class="title">
+						已选择<span class="span">{{DrawStore.promptsSelect.length}}</span>个辅助词
+					</view>
+					<scroll-view scroll-x="true" class="list">
+					</scroll-view>
+					<view class="btn">
+						使用这些提示词
+					</view>
+				</view>
+			</view>
+		</uv-popup>
 	</view>
 </template>
 
@@ -63,13 +96,113 @@
 	import {
 		useDrawStore
 	} from '@/store/draw/draw'
+	import {
+		onMounted,
+		ref
+	} from 'vue';
+	const popup = ref < any > (null);
+
 	const DrawStore = useDrawStore()
-	// DrawStore.init()
-	
-	
+	DrawStore.init()
+
+	let openpopup = function() {
+		popup.value.open()
+	}
 </script>
 
 <style lang="scss">
+	.popup {
+		width: 750rpx;
+		height: 990rpx;
+
+		.title {
+			.bi {
+				width: 10rpx;
+				height: 30rpx;
+				background-color: #1481fc;
+				border-radius: 10rpx;
+				margin-right: 15rpx;
+			}
+
+			display: flex;
+			align-items: center;
+			font-size: 28rpx;
+			height: 80rpx;
+			box-sizing: border-box;
+			padding: 0 20rpx;
+		}
+
+		.content {
+
+			width: 770rpx;
+			height: 750rpx;
+			display: flex;
+
+			.types {
+				background-color: #f8f8f8;
+				width: 20%;
+
+				&-item {
+					width: 100%;
+					height: 100rpx;
+					color: #484848;
+					font-size: 25rpx;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
+
+				&-select {
+					background-color: white;
+					color: black;
+				}
+			}
+
+			.list {
+				width: 80%;
+			}
+		}
+
+		.Auxiliary {
+			width: 750rpx;
+			height: 200rpx;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			.title{
+				width: 100%;
+				margin-top: 10rpx;
+				height: 50rpx;
+				display: flex;
+				align-items: center;
+				box-sizing: border-box;
+				padding: 0 20rpx;
+				font-size: 25rpx;
+				.span{
+					color: #3c9cff;
+				}
+			}
+			.list{
+				width: 100%;
+				height: 90rpx;
+				box-sizing: border-box;
+				padding: 0 20rpx;
+			}
+			.btn{
+				margin: 0 auto;
+				width: 70%;
+				height: 50rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 25rpx;
+				color: white;
+				background-color: #3c9cff;
+				border-radius: 10rpx;
+			}
+		}
+	}
+
 	.container {
 		box-sizing: border-box;
 		width: 750rpx;
@@ -151,8 +284,10 @@
 			margin-top: 15rpx;
 			display: flex;
 			align-items: center;
+			flex-wrap: wrap;
 
 			&-item {
+				margin-bottom: 15rpx;
 				font-size: 24rpx;
 				padding: 5rpx 15rpx;
 				border-radius: 10rpx;
@@ -188,6 +323,7 @@
 				display: flex;
 				justify-content: space-between;
 				flex-wrap: wrap;
+
 				.seedinput {
 					width: 100%;
 					height: 60rpx;
@@ -195,10 +331,11 @@
 					border: 1px solid #919191;
 					border-radius: 10rpx;
 					padding: 0rpx 20rpx;
-				
+
 					font-size: 25rpx;
 					margin-top: 10rpx;
 				}
+
 				&-item {
 					width: 210rpx;
 					height: 65rpx;
