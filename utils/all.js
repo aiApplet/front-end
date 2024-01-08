@@ -77,3 +77,11 @@ export function draw(config) {
 		data: config
 	})
 }
+
+export function signin(config) {
+	return postRequest({
+		url: 'api/signin/',
+		method: 'post',
+		data: config
+	})
+}

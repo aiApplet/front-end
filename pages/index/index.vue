@@ -10,7 +10,7 @@
 		</swiper-item>
 	</swiper>
 	<view class="screen" :style="{'top':BarHeight+IndexStore.navBareight+'px'}">
-		<view></view>
+		<view @click="IndexStore.Refresh">刷新</view>
 		<view class="text">
 			<p class="name">筛选</p>
 			<uv-icon name="arrow-down" size="15" color="#909399"></uv-icon>
@@ -61,7 +61,7 @@
 
 	// 触底加载
 	onReachBottom(() => {
-		IndexStore.initValue(0);
+		IndexStore.Bottoming(0);
 	})
 </script>
 

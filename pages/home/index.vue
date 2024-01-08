@@ -7,7 +7,7 @@
 				ID:{{HomeStore.userinfo.id}}
 			</view>
 		</view>
-		<view class="btn">
+		<view class="btn" @click="HomeStore.signin">
 			签到
 		</view>
 	</view>

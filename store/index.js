@@ -15,12 +15,13 @@ import {
 export const useIndexStore = defineStore('index', {
 	state: () => {
 		return {
+			page: 1,
 			data: {
 				list: [],
 				column: 2,
 				columnSpace: 1,
 			},
-			swiperList:[],
+			swiperList: [],
 			_this: {},
 			navBareight: 0,
 			BarHeight: 0,
@@ -33,15 +34,28 @@ export const useIndexStore = defineStore('index', {
 		init() {
 			// 展示列表
 			pictures({
-				page: 1,
+				page: this.page,
 				size: 10
 			}).then(res => {
 				this.data.list = res.data.result.results
 				this.initValue(0);
 			})
 			// 轮播图
-			carousel_figure().then(res=>{
-				this.swiperList= res.data.result
+			carousel_figure().then(res => {
+				this.swiperList = res.data.result
+			})
+		},
+		// 刷新展示列表
+		Refresh() {
+			this.page = 1
+			this.data.column_2 = []
+			this.data.column_1 = []
+			pictures({
+				page: this.page,
+				size: 10
+			}).then(res => {
+				this.data.list = res.data.result.results
+				this.initValue(0);
 			})
 		},
 		getconfiguration() {
@@ -60,7 +74,7 @@ export const useIndexStore = defineStore('index', {
 			this.navBareight = (bottom - statusBarHeight) + (top - statusBarHeight)
 
 			this._this = getCurrentInstance();
-			
+
 
 			this.w = computed(() => {
 				const column_rate = `${100 / this.data.column - (+this.data.columnSpace)}%`;
@@ -77,9 +91,9 @@ export const useIndexStore = defineStore('index', {
 			}
 		},
 		// 轮播图跳转
-		swiperlink(e){
+		swiperlink(e) {
 			uni.navigateTo({
-				url:e
+				url: e
 			})
 		},
 		// 获取最小值的对象
@@ -111,6 +125,16 @@ export const useIndexStore = defineStore('index', {
 				...this.data.list[i],
 				index: i
 			});
+		},
+		async Bottoming() {
+			this.page += 1
+			pictures({
+				page: this.page,
+				size: 10
+			}).then(res => {
+				this.data.list = res.data.result.results
+				this.initValue(0);
+			})
 		},
 		// 计算每列的高度
 		getMinColumnHeight() {

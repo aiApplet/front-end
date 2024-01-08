@@ -2,7 +2,8 @@ import {
 	defineStore
 } from 'pinia'
 import {
-	getuser
+	getuser,
+	signin
 } from '@/utils/all.js'
 
 export const useHomeStore = defineStore('home', {
@@ -41,6 +42,11 @@ export const useHomeStore = defineStore('home', {
 		init() {
 			getuser().then(res=>{
 				this.userinfo = res.data.result
+			})
+		},
+		signin(){
+			signin().then(res=>{
+				
 			})
 		}
 	}

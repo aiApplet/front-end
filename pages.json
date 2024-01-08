@@ -46,12 +46,12 @@
         "selectedIconPath": "static/tabBar/draw1.png",
         "text": "绘图"
       },
-      {
-        "iconPath": "static/tabBar/tool.png",
-        "pagePath": "pages/tool/index",
-        "selectedIconPath": "static/tabBar/tool1.png",
-        "text": "工具"
-      },
+      // {
+      //   "iconPath": "static/tabBar/tool.png",
+      //   "pagePath": "pages/tool/index",
+      //   "selectedIconPath": "static/tabBar/tool1.png",
+      //   "text": "工具"
+      // },
       {
         "iconPath": "static/tabBar/my.png",
         "pagePath": "pages/home/index",
