@@ -6,7 +6,8 @@ import {
 	loras,
 	random_prompts,
 	styles,
-	prompts
+	prompts,
+	draw
 } from '@/utils/all.js'
 import {
 	getCurrentInstance,
@@ -22,9 +23,36 @@ export const useDrawStore = defineStore('draw', {
 			prompt: '', //提示词
 			Negativeprompt: '', //反向提示词
 			cueWordList: [], //随机提示词列表
-			modelIndex: 0,
-			modelList: ['国风', '二次元', '真人', '真实', '漫画', '头像', '2.5D'], //风格列表
-			LoRAList: ['国风', '二次元', '真人', '真实', '漫画', '头像', '2.5D'], //lora模型列表
+			modelIndex: 0, //选中风格下标
+			modelList: [], //风格列表
+			LoRAIndex: 0, //选中lora下标
+			LoRAList: [], //lora模型列表
+			siezIndex: 0,
+			siezList: [{
+				w: 40,
+				h: 40,
+				size_x: 1,
+				size_y: 1
+			}, {
+				w: 30,
+				h: 60,
+				size_x: 9,
+				size_y: 16
+			}, {
+				w: 60,
+				h: 30,
+				size_x: 16,
+				size_y: 9
+			}, {
+				w: 35,
+				h: 50,
+				size_x: 3,
+				size_y: 4
+			}, {
+				w: 50,
+				h: 35,
+				size_x: 4
+			}],
 			promptsList: [], //提示词助手列表
 			promptsIndex: 0, //选中提示词助手类型
 			promptsShowList: [], //提示词助手展示列表
@@ -35,7 +63,8 @@ export const useDrawStore = defineStore('draw', {
 	actions: {
 		init() {
 			loras().then(res => {
-
+				this.LoRAList = res.data.result
+				this.LoRAList.unshift('')
 			})
 			styles().then(res => {
 				this.modelList = res.data.result
@@ -58,6 +87,53 @@ export const useDrawStore = defineStore('draw', {
 				this.promptsList = newlist
 				this.promptsShowList = newlist[0].prompts
 			})
+		},
+		draw() {
+			let size = this.getSize()
+			let per = {
+				prompt: this.prompt,
+				seed: this.seed,
+				style: this.modelList[this.modelIndex].id,
+				width: size.x,
+				height: size.y,
+			}
+			if (this.LoRAIndex != 0) {
+				per.lora = this.LoRAList[this.LoRAIndex].id
+			}
+			if (this.Negativeprompt.length != 0) {
+				per.negative_prompt = this.Negativeprompt
+			}
+			draw(per).then(res => {
+
+			})
+		},
+		getSize() {
+			let w = this.siezList[this.siezIndex].w
+			let size_x = this.siezList[this.siezIndex].size_x
+			let h = this.siezList[this.siezIndex].h
+			let size_y = this.siezList[this.siezIndex].size_y
+			if (w > h) {
+				return {
+					x: 1000,
+					y: parseInt((size_x / 1000) * size_y)
+				}
+			} else if (h > w) {
+				return {
+					x: parseInt((size_y / 1000) * size_x),
+					y: y
+				}
+			} else {
+				return {
+					x: 1000,
+					y: 1000
+				}
+			}
+		},
+		siezIndexChange(i) {
+			this.siezIndex = i
+		},
+		LoRAIndexChange(i) {
+			this.LoRAIndex = i
 		},
 		modelIndexChange(i) {
 			this.modelIndex = i

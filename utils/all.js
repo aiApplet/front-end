@@ -69,3 +69,11 @@ export function pictures(config) {
 		data: config
 	})
 }
+
+export function draw(config) {
+	return postRequest({
+		url: 'api/draw/',
+		method: 'post',
+		data: config
+	})
+}

@@ -43,12 +43,28 @@
 				<p class="bi"></p>LoRA模型选择
 			</view>
 			<view class="LoRAList">
-				<view class="LoRAList-item" v-for="(item,index) in DrawStore.LoRAList" :key="index">
-					<view class="LoRAList-item-text">
+				<view :class="[{'LoRAList-select':DrawStore.LoRAIndex==index},'LoRAList-item']"
+					v-for="(item,index) in DrawStore.LoRAList" :key="index" @click="DrawStore.LoRAIndexChange(index)">
+					<view class="icon" v-if="index==0">
+						<uv-icon name="close-circle" color="#9a9a9a" size="28"></uv-icon>
+					</view>
+					<view class="LoRAList-item-text" v-if="index!=0">
 						{{item}}
 					</view>
 				</view>
 				<view class="supplement" v-if="DrawStore.LoRAList.length%2==0"></view>
+			</view>
+		</view>
+		<view class="size">
+			<view class="title">
+				<p class="bi"></p>尺寸比例
+			</view>
+			<view class="sizelist">
+				<view :class="[{'sizelist-select':DrawStore.siezIndex==index},'sizelist-item']"
+					v-for="(item,index) in DrawStore.siezList" @click="DrawStore.siezIndexChange(index)">
+					<view class="vbox" :style="{width:item.w+'rpx',height:item.h+'rpx'}"></view>
+					<p class="text">{{item.size_x}}:{{item.size_y}}</p>
+				</view>
 			</view>
 		</view>
 		<view class="seed">
@@ -58,7 +74,7 @@
 			<input type="text" :value="DrawStore.seed" class="seedinput" />
 		</view>
 		<view class="generate">
-			<view class="btn">
+			<view class="btn" @click="DrawStore.draw()">
 				立即生成
 			</view>
 		</view>
@@ -319,6 +335,56 @@
 		width: 750rpx;
 		padding: 0 20rpx;
 
+		.size {
+			width: 100%;
+			margin-top: 30rpx;
+
+			.title {
+				.bi {
+					width: 10rpx;
+					height: 30rpx;
+					background-color: #1481fc;
+					border-radius: 10rpx;
+					margin-right: 15rpx;
+				}
+
+				display: flex;
+				align-items: center;
+				font-size: 28rpx;
+			}
+
+			.sizelist {
+				width: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				margin-top: 20rpx;
+				&-item {
+					width: 120rpx;
+					height: 120rpx;
+					border-radius: 10rpx;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+					font-size: 24rpx;
+					color: #484848;
+					border: 1px solid #8f8f8f;
+					.vbox{
+						background-color: #8f8f8f;
+						border-radius: 10rpx;
+					}
+					.text{
+						margin-top: 10rpx;
+					}
+				}
+
+				&-select {
+					border: 1px solid #3c9cff;
+				}
+			}
+		}
+
 		.seed {
 			width: 100%;
 			margin-top: 30rpx;
@@ -459,8 +525,8 @@
 					color: #484848;
 					margin-bottom: 20rpx;
 				}
-				
-				&-select{
+
+				&-select {
 					background-color: white;
 					color: #3c9cff;
 					box-sizing: border-box;
@@ -509,8 +575,12 @@
 					background-repeat: no-repeat;
 					background-position: 50% 50%;
 					background-size: cover;
-					background-color: #d3d3d3;
+					background-color: #dfdfdf;
 					margin-bottom: 20rpx;
+					box-sizing: border-box;
+					display: flex;
+					align-items: center;
+					justify-content: center;
 
 					&-text {
 						position: absolute;
@@ -524,8 +594,12 @@
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						opacity: 0.7;
+						opacity: 0.6;
 					}
+				}
+
+				&-select {
+					border: 2px solid #3c9cff;
 				}
 			}
 		}
