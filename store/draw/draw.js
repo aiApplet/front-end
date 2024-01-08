@@ -51,7 +51,8 @@ export const useDrawStore = defineStore('draw', {
 			}, {
 				w: 50,
 				h: 35,
-				size_x: 4
+				size_x: 4,
+				size_y: 3
 			}],
 			promptsList: [], //提示词助手列表
 			promptsIndex: 0, //选中提示词助手类型
@@ -103,24 +104,25 @@ export const useDrawStore = defineStore('draw', {
 			if (this.Negativeprompt.length != 0) {
 				per.negative_prompt = this.Negativeprompt
 			}
+			uni.showLoading({
+				title: '图片生成中'
+			});
 			draw(per).then(res => {
-
+				uni.hideLoading();
 			})
 		},
 		getSize() {
-			let w = this.siezList[this.siezIndex].w
 			let size_x = this.siezList[this.siezIndex].size_x
-			let h = this.siezList[this.siezIndex].h
 			let size_y = this.siezList[this.siezIndex].size_y
-			if (w > h) {
+			if (size_x > size_y) {
 				return {
 					x: 1000,
-					y: parseInt((size_x / 1000) * size_y)
+					y: parseInt((1000 / size_x) * size_y)
 				}
-			} else if (h > w) {
+			} else if (size_y > size_x) {
 				return {
-					x: parseInt((size_y / 1000) * size_x),
-					y: y
+					x: parseInt((1000 / size_y) * size_x),
+					y: 1000
 				}
 			} else {
 				return {
