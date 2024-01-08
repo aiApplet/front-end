@@ -31,7 +31,8 @@
 				<p class="bi"></p>风格选择
 			</view>
 			<view class="modelList">
-				<view class="modelList-item" v-for="(item,index) in DrawStore.modelList" :key="index">
+				<view :class="[{'modelList-select':DrawStore.modelIndex==index},'modelList-item']"
+					v-for="(item,index) in DrawStore.modelList" :key="index" @click="DrawStore.modelIndexChange(index)">
 					{{item.name}}
 				</view>
 				<view class="supplement" v-if="DrawStore.modelList.length%2==0"></view>
@@ -56,6 +57,11 @@
 			</view>
 			<input type="text" :value="DrawStore.seed" class="seedinput" />
 		</view>
+		<view class="generate">
+			<view class="btn">
+				立即生成
+			</view>
+		</view>
 
 		<uv-popup ref="popup" mode="bottom" round="20">
 			<view class="popup">
@@ -69,21 +75,33 @@
 							v-for="(item,index) in DrawStore.promptsList" :key="index">
 							{{item.name}}
 						</view>
+						<view class="z"></view>
 					</scroll-view>
-					<scroll-view scroll-y="true" class="list">
-						<!-- <view class="list-item" v-for="(item,index) in DrawStore.promptsShowList" :key="index">
-							<p class="list-item-title">{{item.title}}</p>
-							
-						</view> -->
+					<scroll-view scroll-y="true" class="list" :scroll-top="DrawStore.scrollTop">
+						<view class="list-item" v-for="(item,index) in DrawStore.promptsShowList" :key="index">
+							<p class="list-item-title">{{item[0]}}</p>
+							<view class="words-list">
+								<view class="words" @click="DrawStore.addPromptsSelect(e)" v-for="(e,i) in item[1]">
+									{{e[0]}}
+								</view>
+							</view>
+						</view>
+						<view class="z"></view>
 					</scroll-view>
 				</view>
 				<view class="Auxiliary">
 					<view class="title">
 						已选择<span class="span">{{DrawStore.promptsSelect.length}}</span>个辅助词
 					</view>
-					<scroll-view scroll-x="true" class="list">
+					<scroll-view v-if="DrawStore.promptsSelect.length!=0" scroll-x="true" class="list">
+						<view class="flexbox">
+							<view class="list-item" @click="DrawStore.deletPromptsSelect(index)"
+								v-for="(item,index) in DrawStore.promptsSelect">
+								{{item[0]}}
+							</view>
+						</view>
 					</scroll-view>
-					<view class="btn">
+					<view class="btn" v-if="DrawStore.promptsSelect.length!=0" @click="useCueWord">
 						使用这些提示词
 					</view>
 				</view>
@@ -108,12 +126,40 @@
 	let openpopup = function() {
 		popup.value.open()
 	}
+	let useCueWord = function() {
+		DrawStore.useCueWord()
+		popup.value.close()
+	}
 </script>
 
 <style lang="scss">
+	.generate {
+		width: 100%;
+		height: 200rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-bottom: 80rpx;
+
+		.btn {
+			width: 75%;
+			height: 80rpx;
+			border-radius: 10rpx;
+			font-size: 30rpx;
+			color: white;
+			background-color: #3c9cff;
+			font-weight: bold;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+		}
+	}
+
 	.popup {
 		width: 750rpx;
-		height: 990rpx;
+		height: 1080rpx;
+		position: relative;
 
 		.title {
 			.bi {
@@ -127,7 +173,7 @@
 			display: flex;
 			align-items: center;
 			font-size: 28rpx;
-			height: 80rpx;
+			height: 100rpx;
 			box-sizing: border-box;
 			padding: 0 20rpx;
 		}
@@ -135,8 +181,13 @@
 		.content {
 
 			width: 770rpx;
-			height: 750rpx;
+			height: 980rpx;
 			display: flex;
+
+			.z {
+				width: 100%;
+				height: 210rpx;
+			}
 
 			.types {
 				background-color: #f8f8f8;
@@ -160,38 +211,96 @@
 
 			.list {
 				width: 80%;
+				box-sizing: border-box;
+				padding: 0 20rpx;
+
+				&-item {
+					margin-top: 30rpx;
+					width: 100%;
+
+					&-title {
+						height: 40rpx;
+						width: 100%;
+						display: flex;
+						align-items: center;
+						font-size: 28rpx;
+						margin-bottom: 20rpx;
+						color: black;
+					}
+				}
+
+				.words-list {
+					width: 100%;
+
+					.words {
+						margin-right: 20rpx;
+						margin-bottom: 20rpx;
+						display: inline-block;
+						padding: 5rpx 10rpx;
+						background-color: #f8f8f8;
+						border-radius: 5rpx;
+						color: #ababab;
+						font-size: 25rpx;
+					}
+				}
 			}
 		}
 
 		.Auxiliary {
 			width: 750rpx;
-			height: 200rpx;
+			background-color: white;
+			position: absolute;
+			left: 0;
+			bottom: 0;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
-			.title{
+
+			.title {
 				width: 100%;
 				margin-top: 10rpx;
-				height: 50rpx;
+				height: 60rpx;
 				display: flex;
 				align-items: center;
 				box-sizing: border-box;
 				padding: 0 20rpx;
 				font-size: 25rpx;
-				.span{
+
+				.span {
 					color: #3c9cff;
 				}
 			}
-			.list{
+
+			.list {
 				width: 100%;
-				height: 90rpx;
+				height: 50rpx;
+				margin: 5rpx 0;
 				box-sizing: border-box;
 				padding: 0 20rpx;
+
+				// display: flex;
+				// align-items: center;
+				.flexbox {
+					display: flex;
+					align-items: center;
+				}
+
+				&-item {
+					color: #f9ae3d;
+					padding: 5rpx 10rpx;
+					border-radius: 10rpx;
+					font-size: 25rpx;
+					border: 1px solid #f9ae3d;
+					margin-right: 20rpx;
+					flex-shrink: 0;
+					display: inline-block;
+				}
 			}
-			.btn{
+
+			.btn {
 				margin: 0 auto;
 				width: 70%;
-				height: 50rpx;
+				height: 60rpx;
 				display: flex;
 				align-items: center;
 				justify-content: center;
@@ -199,6 +308,8 @@
 				color: white;
 				background-color: #3c9cff;
 				border-radius: 10rpx;
+				margin-top: 10rpx;
+				margin-bottom: 20rpx;
 			}
 		}
 	}
@@ -211,7 +322,6 @@
 		.seed {
 			width: 100%;
 			margin-top: 30rpx;
-			padding-bottom: 150rpx;
 
 			.title {
 				.bi {
@@ -348,6 +458,13 @@
 					background-color: #efefef;
 					color: #484848;
 					margin-bottom: 20rpx;
+				}
+				
+				&-select{
+					background-color: white;
+					color: #3c9cff;
+					box-sizing: border-box;
+					border: 1px solid #3c9cff;
 				}
 			}
 		}

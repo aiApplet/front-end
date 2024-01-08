@@ -26,9 +26,8 @@
     {
       "path": "pages/home/index",
       "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false,
-        "navigationStyle": "custom"
+        "navigationBarTitleText": "个人中心",
+        "enablePullDownRefresh": false
       }
     }
   ],

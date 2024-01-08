@@ -1,78 +1,202 @@
 <template>
-  <view class="container">
-    <view class="head">
-      <image src="https://cdn.uviewui.com/uview/album/1.jpg" mode="aspectFill" class="avatar"></image>
-      <view class="text-box">
-        <text class="nickname">name</text>
-        <text class="uid">ID:&nbsp;10000</text>
-      </view>
-      <button size="default" type="default"
-              style="color:#ffffff;backgroundColor:#1AAD19;borderColor:#1AAD19; display: inline-table"
-              hover-class="is-hover" @click="SignIn">签到</button>
-    </view>
-    <text class="intro">我的，主要是
-      用户头像、昵称、积分、积分记录、充值（跳到联系我们）、卡密兑换（充值后我们给他的）、绘图记录、分享记录（分享增加积分）
-    </text>
-  </view>
+	<view class="user">
+
+		<view class="userbox">
+			<p class="phone">110</p>
+			<view class="tips">
+				ID:1000
+			</view>
+		</view>
+		<view class="btn">
+			签到
+		</view>
+	</view>
+	<view class="sz">
+		<view class="box">
+			<p class="nm">0</p>
+			<p class="tips">积分</p>
+		</view>
+		<view class="box">
+			<p class="nm">0</p>
+			<p class="tips">分享人数</p>
+		</view>
+		<view class="box">
+			<p class="nm">0</p>
+			<p class="tips">测试</p>
+		</view>
+	</view>
+	<view class="list">
+		<view class="list_box" v-for="(item,index) in HomeStore.list" >
+			<view class="img">
+				<uv-icon name="photo" color="#2979ff" size="28"></uv-icon>
+			</view>
+			
+			<view class="nr">
+				{{item.name}}
+				<view class="image">
+					<uv-icon name="arrow-right" color="#848484" size="20"></uv-icon>
+				</view>
+				
+			</view>
+		</view>
+	</view>
 </template>
 
 <script setup>
-const SignIn = async () => {
-  const result = await uni.request(
-      {
-        url: 'http://localhost:8000/api/user/signIn/', //仅为示例，并非真实接口地址。
-        data: {},
-        header: {
-          'custom-header': 'hello' //自定义请求头信息
-        },
-        success: (res) => {
-          console.log(res.data);
-        },
-        fail: (err) => {
-          console.log(err);
-        }
-      }
-  )
-  console.log(result)
-}
+	import {
+		useHomeStore
+	} from '@/store/home/index'
+	const HomeStore = useHomeStore()
 </script>
 
 <style lang="scss">
-.head {
-  width: 100%;
-  height: 300rpx;
-  background-color: #007AFF;
-  padding-top: 13%;
-  display: flex;
+	.csss {
+		width: 750rpx;
+		border-radius: 20rpx 20rpx 0 0;
+		background-color: white;
+		height: 50vh;
+		box-sizing: border-box;
+		padding: 70rpx 30rpx 30rpx 20rpx;
+	}
 
-  .text-box {
-    flex-direction: column;
-    display: flex;
+	.cent {
+		width: 650rpx;
+		height: 400rpx;
+		border-radius: 20rpx;
+		background-color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		flex-direction: column;
 
-    text {
-      margin-left: 15%;
-      color: white;
-      letter-spacing: 2rpx;
-    }
+		.title {
+			font-size: 28rpx;
+			margin-bottom: 20rpx;
+		}
 
-    .nickname {
-      font-size: 40rpx;
-      font-weight: bold;
-    }
+		
+	}
 
-    .uid {
-      font-size: 20rpx;
-    }
-  }
+	.list {
+		width: 750rpx;
 
-  .avatar {
-    width: 100rpx;
-    height: 100rpx;
-    display: block;
-    margin-left: 5%;
-    border: 2rpx white solid;
-    border-radius: 50%;
-  }
+		.list_box {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			box-sizing: border-box;
 
-}
+			.img {
+				margin: 0 28rpx;
+			}
+		}
+
+		.nr {
+			width: 87%;
+			height: 116rpx;
+			font-size: 28rpx;
+			display: flex;
+			font-weight: 400;
+			color: #333333;
+			align-items: center;
+			justify-content: space-between;
+			border-bottom: 1px solid #EEEEEE;
+
+			.image {
+				margin: 0 30rpx;
+				width: 20rpx;
+				height: auto;
+			}
+		}
+	}
+
+	.geduan {
+		width: 750rpx;
+		height: 16rpx;
+		background: #EEEEEE;
+	}
+
+	.sz {
+
+		width: 692rpx;
+		margin: 0 auto;
+		margin-bottom: 50rpx;
+		display: flex;
+		align-items: center;
+		justify-content: space-evenly;
+
+		.box {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 33%;
+
+			justify-content: center;
+
+			.nm {
+				font-weight: bold;
+				font-size: 40rpx;
+				color: #333333;
+				line-height: 47rpx;
+			}
+
+			.tips {
+				margin-top: 8rpx;
+				font-size: 24rpx;
+				font-weight: 400;
+				color: #999999;
+				line-height: 28rpx;
+			}
+		}
+	}
+
+	.user {
+		width: 692rpx;
+		margin: 36rpx auto;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.userbox {
+			display: flex;
+			flex-direction: column;
+			width: 350rpx;
+
+			.phone {
+				font-weight: 600;
+				color: #333333;
+				font-size: 32rpx;
+				margin-bottom: 12rpx;
+				line-height: 38rpx;
+			}
+
+			.tips {
+				color: #999999;
+				font-size: 24rpx;
+				line-height: 28rpx;
+				display: flex;
+				align-items: center;
+
+				.icon {
+					margin: 0 20rpx;
+					width: 30rpx;
+					border-radius: 50%;
+					height: auto;
+				}
+			}
+		}
+
+		.btn {
+
+			height: 50rpx;
+			line-height: 50rpx;
+			font-size: 24rpx;
+			background: #FF5152;
+			border-radius: 58rpx 58rpx 58rpx 58rpx;
+			text-align: center;
+			font-weight: 400;
+			color: #FFFFFF;
+			padding: 0 20rpx;
+		}
+	}
 </style>
