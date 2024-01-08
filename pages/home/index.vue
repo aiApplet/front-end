@@ -1,10 +1,10 @@
 <template>
 	<view class="user">
-
+		<image class="avatar" :src="HomeStore.userinfo.avatar" mode="aspectFill"></image>
 		<view class="userbox">
-			<p class="phone">110</p>
+			<p class="phone">{{HomeStore.userinfo.nickname}}</p>
 			<view class="tips">
-				ID:1000
+				ID:{{HomeStore.userinfo.id}}
 			</view>
 		</view>
 		<view class="btn">
@@ -13,7 +13,7 @@
 	</view>
 	<view class="sz">
 		<view class="box">
-			<p class="nm">0</p>
+			<p class="nm">{{HomeStore.userinfo.balance}}</p>
 			<p class="tips">积分</p>
 		</view>
 		<view class="box">
@@ -22,13 +22,13 @@
 		</view>
 		<view class="box">
 			<p class="nm">0</p>
-			<p class="tips">测试</p>
+			<p class="tips">绘图次数</p>
 		</view>
 	</view>
 	<view class="list">
 		<view class="list_box" v-for="(item,index) in HomeStore.list" >
 			<view class="img">
-				<uv-icon name="photo" color="#2979ff" size="28"></uv-icon>
+				<uv-icon :name="item.icon" color="#2979ff" size="28"></uv-icon>
 			</view>
 			
 			<view class="nr">
@@ -47,6 +47,7 @@
 		useHomeStore
 	} from '@/store/home/index'
 	const HomeStore = useHomeStore()
+	HomeStore.init()
 </script>
 
 <style lang="scss">
@@ -156,11 +157,16 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-
+		.avatar{
+			width: 132rpx;
+			height: 132rpx;
+			border-radius: 50%;
+			background-color: #ececec;
+		}
 		.userbox {
 			display: flex;
 			flex-direction: column;
-			width: 350rpx;
+			width: 400rpx;
 
 			.phone {
 				font-weight: 600;

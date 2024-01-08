@@ -5,6 +5,15 @@ import {
 } from './http.js'
 
 
+
+export function getuser(config) {
+	return postRequest({
+		url: 'api/user/',
+		method: 'get',
+		data: config
+	})
+}
+
 export function prompts(config) {
 	return postRequest({
 		url: 'api/prompts/',
