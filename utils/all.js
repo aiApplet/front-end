@@ -9,7 +9,7 @@ import {
 export function rechargeable_card(config) {
 	return postRequest({
 		url: 'api/rechargeable_card/',
-		method: 'get',
+		method: 'post',
 		data: config
 	})
 }
