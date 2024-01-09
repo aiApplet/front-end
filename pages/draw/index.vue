@@ -8,15 +8,7 @@
 				<p>{{DrawStore.prompt.length}}/1000</p>
 			</view>
 		</view>
-		<view class="prompt_box">
-			<p class="title">反向提示词（Negative prompt）</p>
-			<textarea class="textarea" @input="input" maxlength="10000" confirm-type="done"
-				:value="DrawStore.Negativeprompt" name="" id="" placeholder="输入你想要的内容,支持中英文,用逗号分割." cols="30"
-				rows="10"></textarea>
-			<view class="Number">
-				<p>{{DrawStore.Negativeprompt.length}}/1000</p>
-			</view>
-		</view>
+		
 		<view class="cueWord">
 			<p @click="DrawStore.random_prompts">随机一下</p>
 			<p @click="openpopup">提示词助手</p>
@@ -24,6 +16,21 @@
 		<view class="cueWordList">
 			<view class="cueWordList-item" v-for="(item,index) in DrawStore.cueWordList" :key="index">
 				{{item}}
+			</view>
+		</view>
+		<view class="prompt">
+			<view class="title">
+				<p class="bi"></p>反向提示词
+			</view>
+			<uv-switch v-model="DrawStore.switch_value" @input="DrawStore.switchInput" ></uv-switch>
+		</view>
+		<view class="prompt_box" v-if="DrawStore.switch_value">
+			<p class="title">反向提示词（Negative prompt）</p>
+			<textarea class="textarea" @input="input" maxlength="10000" confirm-type="done"
+				:value="DrawStore.Negativeprompt" name="" id="" placeholder="输入你想要的内容,支持中英文,用逗号分割." cols="30"
+				rows="10"></textarea>
+			<view class="Number">
+				<p>{{DrawStore.Negativeprompt.length}}/1000</p>
 			</view>
 		</view>
 		<view class="model">
@@ -458,7 +465,27 @@
 				margin-top: 10rpx;
 			}
 		}
-
+		
+		.prompt{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 20rpx;
+			margin-top: 10rpx;
+			.title {
+				.bi {
+					width: 10rpx;
+					height: 30rpx;
+					background-color: #1481fc;
+					border-radius: 10rpx;
+					margin-right: 15rpx;
+				}
+			
+				display: flex;
+				align-items: center;
+				font-size: 28rpx;
+			}
+		}
 		.prompt_box {
 			margin-bottom: 20rpx;
 			width: 100%;

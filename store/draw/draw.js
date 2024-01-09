@@ -60,7 +60,8 @@ export const useDrawStore = defineStore('draw', {
 			promptsShowList: [], //提示词助手展示列表
 			promptsSelect: [], //选中辅助词
 			seed: -1,
-			resultImg: ''
+			resultImg: '',
+			switch_value:false
 		}
 	},
 	actions: {
@@ -91,11 +92,11 @@ export const useDrawStore = defineStore('draw', {
 				this.promptsShowList = newlist[0].prompts
 			})
 		},
+		switchInput(e){},
 		draw() {
 			let size = this.getSize()
-			console.log(this.promptValue);
 			let per = {
-				prompt: this.promptValue,
+				prompt: this.prompt,
 				seed: this.seed,
 				style: this.modelList[this.modelIndex].id,
 				width: size.x,
@@ -172,7 +173,7 @@ export const useDrawStore = defineStore('draw', {
 		},
 		random_prompts() {
 			random_prompts().then(res => {
-				this.prompt = res.data.result.key
+				this.prompt = res.data.result.val
 				this.promptValue = res.data.result.val
 				// this.cueWordList = res.data.result.key.split(',')
 			})
@@ -185,7 +186,7 @@ export const useDrawStore = defineStore('draw', {
 		},
 		useCueWord() {
 			this.promptsSelect.forEach((e, i) => {
-				this.prompt += e[0]
+				this.prompt += e[1]
 				this.prompt += ','
 			})
 			this.promptsSelect = []

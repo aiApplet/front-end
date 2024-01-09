@@ -4,7 +4,7 @@
 		<view class="box">
 			<view class="title">
 				<view class="text">
-					<p class="bi"></p>风格选择
+					<p class="bi"></p>关键词（英）
 				</view>
 
 				<view class="icon" @click="Store.copy()">

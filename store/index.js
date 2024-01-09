@@ -4,7 +4,8 @@ import {
 } from 'pinia'
 import {
 	pictures,
-	carousel_figure
+	carousel_figure,
+	styles
 } from '@/utils/all.js'
 import {
 	getCurrentInstance,
@@ -26,7 +27,9 @@ export const useIndexStore = defineStore('index', {
 			navBareight: 0,
 			BarHeight: 0,
 			w: 0,
-			m: 0
+			m: 0,
+			styles_list: [], //筛选风格列表
+			styles_index: null
 		}
 	},
 	actions: {
@@ -44,12 +47,42 @@ export const useIndexStore = defineStore('index', {
 			carousel_figure().then(res => {
 				this.swiperList = res.data.result
 			})
+			// 获取风格列表
+			styles().then(res => {
+				this.styles_list = res.data.result
+			})
 		},
-		// 筛选
-		popupOpen(popup){
+		// 选择风格筛选
+		styles_select(e, i) {
+			this.page = 1
+			let per = {}
+			this.data.list = []
+			if (this.styles_index == i) {
+				this.styles_index = null
+				per = {
+					page: this.page,
+					size: 10
+				}
+			} else {
+				this.styles_index = i
+				per = {
+					page: this.page,
+					size: 10,
+					config__style: e.id
+				}
+			}
+
+			pictures(per).then(res => {
+				this.data.list = res.data.result.results
+				this.initValue(0);
+			})
+		},
+		popupChange(e) {},
+		// 筛选展开
+		popupOpen(popup) {
 			popup.value.open()
 		},
-		imgshow(e){
+		imgshow(e) {
 			uni.previewImage({
 				urls: [e.image],
 				current: 0

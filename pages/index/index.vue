@@ -11,9 +11,9 @@
 	</swiper>
 	<view class="screen" :style="{'top':BarHeight+IndexStore.navBareight+'px'}">
 		<view @click="IndexStore.Refresh">刷新</view>
-		<view class="text" @click="popupOpen()">
+		<view :class="[{'text-select':IndexStore.styles_index!=null},'text']" @click="popupOpen()">
 			<p class="name">筛选</p>
-			<uv-icon name="arrow-down" size="15" color="#909399"></uv-icon>
+			<uv-icon name="arrow-down" size="15" :color="IndexStore.styles_index!=null?'#3c9cff':'#a1a1a1'"></uv-icon>
 		</view>
 	</view>
 	<view class="padding-top-lg">
@@ -42,15 +42,24 @@
 		</view>
 	</view>
 
-	<uv-popup ref="popup" mode="bottom" round="20">
+	<uv-popup ref="popup" mode="bottom" round="20" @change="IndexStore.popupChange">
 		<view class="screenBox">
-			<view class="screenList">
-
-			</view>
-			<view class="screenBottom">
-				<view class="clear">清空</view>
-				<view class="save">保存</view>
-			</view>
+			<scroll-view scroll-y="true" class="screenList">
+				<view>
+					<p class="title">风格</p>
+					<view class="list">
+						<view @click="popupClose(item,index)"
+							:class="[{'list-select':IndexStore.styles_index==index},'list-item']"
+							v-for="(item,index) in IndexStore.styles_list">
+							{{item.name}}
+						</view>
+					</view>
+				</view>
+			</scroll-view>
+			<!-- <view class="screenBottom">
+				<view class="clear" @click="popupClear()">清空</view>
+				<view class="save" @click="popupClose()">保存</view>
+			</view> -->
 		</view>
 	</uv-popup>
 </template>
@@ -90,6 +99,13 @@
 	let popupOpen = function() {
 		popup.value.open()
 	}
+	let popupClose = function(item, index) {
+		IndexStore.styles_select(item, index)
+		popup.value.close()
+	}
+	let popupClear = function() {
+		popup.value.close()
+	}
 
 	// 分享
 	const regionss = uni.getStorageSync("user")
@@ -104,7 +120,7 @@
 	onShareTimeline(() => {
 		return {
 			title: 'AI绘图仙',
-			path:'/pages/index/index',
+			path: '/pages/index/index',
 			query: 'share=' + regionss.id,
 		}
 	})
@@ -117,7 +133,37 @@
 
 		.screenList {
 			width: 750rpx;
-			height: 680rpx;
+			height: 800rpx;
+			box-sizing: border-box;
+			padding: 20rpx 45rpx;
+
+			.title {
+				width: 100%;
+				margin-top: 30rpx;
+				font-size: 35rpx;
+				font-weight: bold;
+			}
+
+			.list {
+				margin-top: 20rpx;
+				width: 100%;
+				display: flex;
+				justify-content: space-between;
+				flex-wrap: wrap;
+
+				&-item {
+					border-radius: 40rpx;
+					padding: 20rpx 70rpx;
+					font-size: 25rpx;
+					margin-bottom: 20rpx;
+					background-color: #eaeaea;
+				}
+
+				&-select {
+					color: white;
+					background-color: #3c9cff;
+				}
+			}
 		}
 
 		.screenBottom {
@@ -216,6 +262,10 @@
 			font-size: 26rpx;
 			display: flex;
 			align-items: center;
+		}
+
+		.text-select {
+			color: #3c9cff;
 		}
 	}
 
