@@ -6,6 +6,23 @@ import {
 
 
 
+
+export function aliyun_oss_token(config) {
+	return postRequest({
+		url: 'api/aliyun_oss_token/',
+		method: 'get',
+		data: config
+	})
+}
+
+export function account_record(config) {
+	return postRequest({
+		url: 'api/account_record/',
+		method: 'get',
+		data: config
+	})
+}
+
 export function getuser(config) {
 	return postRequest({
 		url: 'api/user/',

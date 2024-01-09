@@ -9,15 +9,19 @@ import {
 export const useHomeStore = defineStore('home', {
 	state: () => {
 		return {
-			userinfo:{
-				avatar:'',
-				nickname:'',
-				balance:0,
-				id: 0
+			userinfo: {
+				avatar: '',
+				nickname: '',
+				balance: 0,
+				id: 0,
+				shares_count: 0,
+				draw_count: 0,
+				sign_in: false
 			},
 			list: [{
 					name: '积分记录',
-					icon: 'empty-history'
+					icon: 'empty-history',
+					url: '/pages/home/IntegralRecord'
 				},
 				{
 					name: '充值',
@@ -40,13 +44,32 @@ export const useHomeStore = defineStore('home', {
 	},
 	actions: {
 		init() {
-			getuser().then(res=>{
+			getuser().then(res => {
 				this.userinfo = res.data.result
 			})
 		},
-		signin(){
-			signin().then(res=>{
-				
+		changeAvatar(){
+			uni.chooseImage({
+				success(res) {
+					console.log(res);
+				}
+			})
+		},
+		signin() {
+			signin().then(res => {
+				if (res.data.code == 0) {
+					this.userinfo.sign_in = false
+					this.userinfo.balance += 1
+					uni.showToast({
+						title: '签到成功',
+						duration: 2000
+					});
+				}
+			})
+		},
+		link(e) {
+			uni.navigateTo({
+				url: e.url
 			})
 		}
 	}

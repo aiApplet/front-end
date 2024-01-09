@@ -18,12 +18,27 @@ export const myRequest = (options) => {
 				'Content-Type': 'application/x-www-form-urlencoded'
 			},
 			success: (res) => {
-				if(res.data.code == 0){
+				if (res.data.code == 0) {
 					resolve(res)
-				}else{
+				} else if (res.data.code == 401) {
+					uni.login({
+						provider: "weixin",
+						success: function(res) {
+							login({
+								url: 'api/user/',
+								method: 'post',
+								data: {
+									code: res.code
+								}
+							}).then(res => {
+								resolve(res)
+							})
+						}
+					})
+				} else {
 					uni.showToast({
 						title: res.data.message,
-						icon:'none',
+						icon: 'none',
 						duration: 2000
 					});
 				}
@@ -53,12 +68,27 @@ export const postRequest = (options) => {
 				'Content-Type': 'application/json'
 			},
 			success: (res) => {
-				if(res.data.code == 0){
+				if (res.data.code == 0) {
 					resolve(res)
-				}else{
+				} else if (res.data.code == 401) {
+					uni.login({
+						provider: "weixin",
+						success: function(res) {
+							login({
+								url: 'api/user/',
+								method: 'post',
+								data: {
+									code: res.code
+								}
+							}).then(res => {
+								resolve(res)
+							})
+						}
+					})
+				} else {
 					uni.showToast({
 						title: res.data.message,
-						icon:'none',
+						icon: 'none',
 						duration: 2000
 					});
 				}
@@ -82,12 +112,12 @@ export const login = (options) => {
 				'Content-Type': 'application/json'
 			},
 			success: (res) => {
-				if(res.data.code == 0){
+				if (res.data.code == 0) {
 					resolve(res)
-				}else{
+				} else {
 					uni.showToast({
 						title: res.data.message,
-						icon:'none',
+						icon: 'none',
 						duration: 2000
 					});
 				}

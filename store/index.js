@@ -45,6 +45,12 @@ export const useIndexStore = defineStore('index', {
 				this.swiperList = res.data.result
 			})
 		},
+		imgshow(e){
+			uni.previewImage({
+				urls: [e.image],
+				current: 0
+			});
+		},
 		// 刷新展示列表
 		Refresh() {
 			this.page = 1

@@ -1,8 +1,8 @@
 <template>
 	<view class="navbar" :style="{height:IndexStore.BarHeight+IndexStore.navBareight +'px'}">
-		<view class="narbar-content" :style="{height:IndexStore.navBareight+'px'}">
+		<!-- <view class="narbar-content" :style="{height:IndexStore.navBareight+'px'}">
 			<uv-icon name="search" size="28" color="#444548"></uv-icon>
-		</view>
+		</view> -->
 	</view>
 	<swiper class="swiper" :indicator-dots="false" :autoplay="true" circular="true" :interval="3000" :duration="1000">
 		<swiper-item v-for="(e,i) in IndexStore.swiperList" :key="i"  @click="IndexStore.link(e.link)">
@@ -21,11 +21,20 @@
 			<view v-for="(item,index) in IndexStore.data.column" :key="index" class="waterfalls-flow-column"
 				:style="{'width':IndexStore.w,'margin-left':index==0?0:IndexStore.m}"
 				:id="`waterfalls_flow_column_${index+1}`">
-				<view class="column-value" v-for="(item2,index2) in IndexStore.data[`column_${index+1}`]" :key="index2">
+				<view class="column-value" @click="IndexStore.imgshow(item2)" v-for="(item2,index2) in IndexStore.data[`column_${index+1}`]" :key="index2">
 					<image :src="item2.image" mode="widthFix" @load="IndexStore.imgLoad(item2)"
 						@error="IndexStore.imgError(item2)" class="imgsty"></image>
 					<view class="introduce">
-						{{item2.nickname}}
+						<view class="user">
+							<image class="avatar" :src="item2.avatar" mode="aspectFill"></image>
+							<p class="nickname">{{item2.nickname}}</p>
+						</view>
+						<view class="count">
+							<uv-icon name="eye" color="#797979" size="16"></uv-icon>
+							<p class="item ri">{{item2.comment_count}}</p>
+							<uv-icon name="heart" color="#797979" size="16"></uv-icon>
+							<p class="item">{{item2.like_count}}</p>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -186,6 +195,41 @@
 			box-sizing: border-box;
 			padding: 15rpx;
 			margin: 0;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			.user{
+				display: flex;
+				align-items: center;
+				.avatar{
+					width: 40rpx;
+					height: 40rpx;
+					border-radius: 50%;
+					margin-right: 15rpx;
+				}
+				.nickname{
+					font-size: 24rpx;
+					color: #797979;
+					width: 170rpx;
+					word-break:break-all;
+					display: -webkit-box;
+					-webkit-line-clamp:1;
+					-webkit-box-orient: vertical;
+					overflow: hidden;
+				}
+			}
+			.count{
+				display: flex;
+				align-items: center;
+				.item{
+					margin: 0 5rpx;
+					font-size: 24rpx;
+					color: #797979;
+				}
+				.ri{
+					margin-right: 10rpx;
+				}
+			}
 		}
 
 		.imgsty {

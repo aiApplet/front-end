@@ -74,8 +74,14 @@
 			<input type="text" :value="DrawStore.seed" class="seedinput" />
 		</view>
 		<view class="generate">
-			<view class="btn" @click="DrawStore.draw()">
+			<view class="btn" @click="DrawStore.draw()" v-if="DrawStore.resultImg.length==0">
 				立即生成
+			</view>
+			<view class="btns" @click="DrawStore.imgyl()" v-if="DrawStore.resultImg.length!=0">
+				查看图片
+			</view>
+			<view class="btns blue" @click="DrawStore.regeneration()" v-if="DrawStore.resultImg.length!=0">
+				重新填写生成图片
 			</view>
 		</view>
 
@@ -149,13 +155,42 @@
 </script>
 
 <style lang="scss">
+	.imgbox {
+		margin: 0;
+		padding: 0;
+
+		.resultImg {
+			width: 750rpx;
+			height: auto;
+			margin: 0 auto;
+			margin-top: 30rpx;
+		}
+	}
+
+
 	.generate {
 		width: 100%;
 		height: 200rpx;
 		display: flex;
 		align-items: center;
+		flex-direction: column;
 		justify-content: center;
 		padding-bottom: 80rpx;
+
+		.btns {
+			margin: 0 auto;
+			width: 70%;
+			height: 60rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 25rpx;
+			color: white;
+			background-color: #ffaa00;
+			border-radius: 10rpx;
+			margin-top: 10rpx;
+			margin-bottom: 20rpx;
+		}
 
 		.btn {
 			width: 75%;
@@ -169,6 +204,10 @@
 			align-items: center;
 			justify-content: center;
 
+		}
+
+		.blue {
+			background-color: #3c9cff;
 		}
 	}
 
@@ -327,6 +366,7 @@
 				margin-top: 10rpx;
 				margin-bottom: 20rpx;
 			}
+
 		}
 	}
 
@@ -359,6 +399,7 @@
 				align-items: center;
 				justify-content: space-between;
 				margin-top: 20rpx;
+
 				&-item {
 					width: 120rpx;
 					height: 120rpx;
@@ -370,11 +411,13 @@
 					font-size: 24rpx;
 					color: #484848;
 					border: 1px solid #8f8f8f;
-					.vbox{
+
+					.vbox {
 						background-color: #8f8f8f;
 						border-radius: 10rpx;
 					}
-					.text{
+
+					.text {
 						margin-top: 10rpx;
 					}
 				}

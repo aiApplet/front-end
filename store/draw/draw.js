@@ -21,6 +21,7 @@ export const useDrawStore = defineStore('draw', {
 		return {
 			scrollTop: 10,
 			prompt: '', //提示词
+			promptValue: '',
 			Negativeprompt: '', //反向提示词
 			cueWordList: [], //随机提示词列表
 			modelIndex: 0, //选中风格下标
@@ -58,7 +59,8 @@ export const useDrawStore = defineStore('draw', {
 			promptsIndex: 0, //选中提示词助手类型
 			promptsShowList: [], //提示词助手展示列表
 			promptsSelect: [], //选中辅助词
-			seed: -1
+			seed: -1,
+			resultImg: ''
 		}
 	},
 	actions: {
@@ -91,8 +93,9 @@ export const useDrawStore = defineStore('draw', {
 		},
 		draw() {
 			let size = this.getSize()
+			console.log(this.promptValue);
 			let per = {
-				prompt: this.prompt,
+				prompt: this.promptValue,
 				seed: this.seed,
 				style: this.modelList[this.modelIndex].id,
 				width: size.x,
@@ -105,11 +108,28 @@ export const useDrawStore = defineStore('draw', {
 				per.negative_prompt = this.Negativeprompt
 			}
 			uni.showLoading({
-				title: '图片生成中'
+				title: '图片生成中',
+				mask: true
 			});
 			draw(per).then(res => {
+				this.resultImg = res.data.result.image
+				console.log(res.data.result.image);
 				uni.hideLoading();
+				uni.previewImage({
+					urls: [this.resultImg],
+					current: 0
+				});
 			})
+		},
+		regeneration() {
+			this.prompt = ''
+			this.resultImg = ''
+		},
+		imgyl() {
+			uni.previewImage({
+				urls: [this.resultImg],
+				current: 0
+			});
 		},
 		getSize() {
 			let size_x = this.siezList[this.siezIndex].size_x
@@ -148,10 +168,12 @@ export const useDrawStore = defineStore('draw', {
 		},
 		input(e) {
 			this.prompt = e.detail.value
+
 		},
 		random_prompts() {
 			random_prompts().then(res => {
 				this.prompt = res.data.result.key
+				this.promptValue = res.data.result.val
 				// this.cueWordList = res.data.result.key.split(',')
 			})
 		},
