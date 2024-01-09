@@ -1,17 +1,17 @@
 <template>
 	<view class="navbar" :style="{height:IndexStore.BarHeight+IndexStore.navBareight +'px'}">
 		<!-- <view class="narbar-content" :style="{height:IndexStore.navBareight+'px'}">
-			<uv-icon name="search" size="28" color="#444548"></uv-icon>
-		</view> -->
+      <uv-icon name="search" size="28" color="#444548"></uv-icon>
+    </view> -->
 	</view>
 	<swiper class="swiper" :indicator-dots="false" :autoplay="true" circular="true" :interval="3000" :duration="1000">
-		<swiper-item v-for="(e,i) in IndexStore.swiperList" :key="i"  @click="IndexStore.link(e.link)">
+		<swiper-item v-for="(e,i) in IndexStore.swiperList" :key="i" @click="IndexStore.link(e.link)">
 			<view class="swiper-item" :style="{backgroundImage:'url('+e.image+')'}"></view>
 		</swiper-item>
 	</swiper>
 	<view class="screen" :style="{'top':BarHeight+IndexStore.navBareight+'px'}">
 		<view @click="IndexStore.Refresh">刷新</view>
-		<view class="text">
+		<view class="text" @click="popupOpen()">
 			<p class="name">筛选</p>
 			<uv-icon name="arrow-down" size="15" color="#909399"></uv-icon>
 		</view>
@@ -21,44 +21,61 @@
 			<view v-for="(item,index) in IndexStore.data.column" :key="index" class="waterfalls-flow-column"
 				:style="{'width':IndexStore.w,'margin-left':index==0?0:IndexStore.m}"
 				:id="`waterfalls_flow_column_${index+1}`">
-				<view class="column-value" @click="IndexStore.imgshow(item2)" v-for="(item2,index2) in IndexStore.data[`column_${index+1}`]" :key="index2">
+				<view class="column-value" @click="IndexStore.imgshow(item2)"
+					v-for="(item2,index2) in IndexStore.data[`column_${index+1}`]" :key="index2">
 					<image :src="item2.image" mode="widthFix" @load="IndexStore.imgLoad(item2)"
 						@error="IndexStore.imgError(item2)" class="imgsty"></image>
 					<view class="introduce">
 						<view class="user">
 							<image class="avatar" :src="item2.avatar" mode="aspectFill"></image>
-							<p class="nickname">{{item2.nickname}}</p>
+							<p class="nickname">{{ item2.nickname }}</p>
 						</view>
 						<view class="count">
 							<uv-icon name="eye" color="#797979" size="16"></uv-icon>
-							<p class="item ri">{{item2.comment_count}}</p>
+							<p class="item ri">{{ item2.comment_count }}</p>
 							<uv-icon name="heart" color="#797979" size="16"></uv-icon>
-							<p class="item">{{item2.like_count}}</p>
+							<p class="item">{{ item2.like_count }}</p>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
 	</view>
+
+	<uv-popup ref="popup" mode="bottom" round="20">
+		<view class="screenBox">
+			<view class="screenList">
+
+			</view>
+			<view class="screenBottom">
+				<view class="clear">清空</view>
+				<view class="save">保存</view>
+			</view>
+		</view>
+	</uv-popup>
 </template>
 
 <script setup>
 	import {
+		ref,
 		getCurrentInstance
 	} from 'vue';
 	import {
 		onReachBottom,
-		onLoad
+		onLoad,
+		onShareAppMessage,
+		onShareTimeline
 	} from '@dcloudio/uni-app'
 	import {
 		useIndexStore
 	} from '@/store/index'
 
+	const popup = ref(null);
 	const IndexStore = useIndexStore()
-
 	IndexStore.getconfiguration()
+
 	onLoad(async (options) => {
-		//加载全局变量
+		// 加载全局变量
 		// 获取vue3全局对象
 		const {
 			proxy
@@ -66,15 +83,79 @@
 		await proxy.$onLaunched;
 		IndexStore.init()
 	})
-
-
 	// 触底加载
 	onReachBottom(() => {
 		IndexStore.Bottoming(0);
 	})
+	let popupOpen = function() {
+		popup.value.open()
+	}
+
+	// 分享
+	const regionss = uni.getStorageSync("user")
+	onShareAppMessage(() => {
+		return {
+			title: "AI绘图仙",
+			path: '/pages/index/index?share=' + regionss.id,
+			success: res => {},
+			fail: err => {}
+		};
+	})
+	onShareTimeline(() => {
+		return {
+			title: 'AI绘图仙',
+			path:'/pages/index/index',
+			query: 'share=' + regionss.id,
+		}
+	})
 </script>
 
 <style scoped lang="scss">
+	.screenBox {
+		width: 750rpx;
+		height: 800rpx;
+
+		.screenList {
+			width: 750rpx;
+			height: 680rpx;
+		}
+
+		.screenBottom {
+			width: 750rpx;
+			height: 120rpx;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			border-top: 1px solid #eaeaea;
+			box-sizing: border-box;
+			padding: 0 40rpx;
+
+			.clear {
+				width: 38%;
+				height: 80rpx;
+				background-color: #d3d3d3;
+				border-radius: 15rpx;
+				color: white;
+				line-height: 80rpx;
+				text-align: center;
+				font-size: 30rpx;
+				font-weight: bold;
+			}
+
+			.save {
+				width: 60%;
+				height: 80rpx;
+				background-color: #3c9cff;
+				border-radius: 15rpx;
+				line-height: 80rpx;
+				text-align: center;
+				color: white;
+				font-size: 30rpx;
+				font-weight: bold;
+			}
+		}
+	}
+
 	.navbar {
 		width: 100vw;
 		position: relative;
@@ -132,7 +213,7 @@
 				margin-right: 20rpx;
 			}
 
-			font-size:26rpx;
+			font-size: 26rpx;
 			display: flex;
 			align-items: center;
 		}
@@ -198,35 +279,41 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			.user{
+
+			.user {
 				display: flex;
 				align-items: center;
-				.avatar{
+
+				.avatar {
 					width: 40rpx;
 					height: 40rpx;
 					border-radius: 50%;
 					margin-right: 15rpx;
 				}
-				.nickname{
+
+				.nickname {
 					font-size: 24rpx;
 					color: #797979;
 					width: 170rpx;
-					word-break:break-all;
+					word-break: break-all;
 					display: -webkit-box;
-					-webkit-line-clamp:1;
+					-webkit-line-clamp: 1;
 					-webkit-box-orient: vertical;
 					overflow: hidden;
 				}
 			}
-			.count{
+
+			.count {
 				display: flex;
 				align-items: center;
-				.item{
+
+				.item {
 					margin: 0 5rpx;
 					font-size: 24rpx;
 					color: #797979;
 				}
-				.ri{
+
+				.ri {
 					margin-right: 10rpx;
 				}
 			}

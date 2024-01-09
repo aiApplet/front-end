@@ -1,10 +1,12 @@
 <template>
 	<view class="user">
-		<image class="avatar" @click="HomeStore.changeAvatar()" :src="HomeStore.userinfo.avatar" mode="aspectFill"></image>
+		<image class="avatar" @click="HomeStore.junp('/pages/home/userinfo')" :src="HomeStore.userinfo.avatar"
+			mode="aspectFill"></image>
 		<view class="userbox">
-			<p class="phone">{{HomeStore.userinfo.nickname}}</p>
+			<!--      <input type="nickname" @blur="HomeStore.ChangeNickname" class="phone" v-model="HomeStore.userinfo.nickname" placeholder="请输入昵称" />-->
+			<p class="phone">{{ HomeStore.userinfo.nickname }}</p>
 			<view class="tips">
-				ID:{{HomeStore.userinfo.id}}
+				ID:{{ HomeStore.userinfo.id }}
 			</view>
 		</view>
 		<view class="sign">
@@ -16,39 +18,51 @@
 	</view>
 	<view class="sz">
 		<view class="box">
-			<p class="nm">{{HomeStore.userinfo.balance}}</p>
+			<p class="nm">{{ HomeStore.userinfo.balance }}</p>
 			<p class="tips">积分</p>
 		</view>
 		<view class="box">
-			<p class="nm">{{HomeStore.userinfo.shares_count}}</p>
+			<p class="nm">{{ HomeStore.userinfo.shares_count }}</p>
 			<p class="tips">分享人数</p>
 		</view>
 		<view class="box">
-			<p class="nm">{{HomeStore.userinfo.draw_count}}</p>
+			<p class="nm">{{ HomeStore.userinfo.draw_count }}</p>
 			<p class="tips">绘图次数</p>
 		</view>
 	</view>
 	<view class="list">
-		<view class="wbox"  v-for="(item,index) in HomeStore.list">
+		<view class="wbox" v-for="(item,index) in HomeStore.list">
 			<button class="list_btn" v-if="item.name=='充值'" open-type="contact">
 				<view class="img">
 					<uv-icon :name="item.icon" color="#2979ff" size="28"></uv-icon>
 				</view>
-							
+
 				<view class="nr">
-					{{item.name}}
+					{{ item.name }}
 					<view class="image">
 						<uv-icon name="arrow-right" color="#848484" size="20"></uv-icon>
 					</view>
 				</view>
 			</button>
-			<view class="list_box" @click="HomeStore.link(item)" v-else>
+			<button class="list_btn" v-if="item.name=='分享'" open-type="share">
 				<view class="img">
 					<uv-icon :name="item.icon" color="#2979ff" size="28"></uv-icon>
 				</view>
 			
 				<view class="nr">
-					{{item.name}}
+					{{ item.name }}
+					<view class="image">
+						<uv-icon name="arrow-right" color="#848484" size="20"></uv-icon>
+					</view>
+				</view>
+			</button>
+			<view class="list_box" @click="HomeStore.link(item)" v-if="item.name!='充值'&&item.name!='分享'">
+				<view class="img">
+					<uv-icon :name="item.icon" color="#2979ff" size="28"></uv-icon>
+				</view>
+
+				<view class="nr">
+					{{ item.name }}
 					<view class="image">
 						<uv-icon name="arrow-right" color="#848484" size="20"></uv-icon>
 					</view>
@@ -63,11 +77,24 @@
 		useHomeStore
 	} from '@/store/home/index'
 	import {
-		onShow
+		onShow,
+		onShareAppMessage
 	} from "@dcloudio/uni-app";
+
 	const HomeStore = useHomeStore()
 	onShow(() => {
 		HomeStore.init()
+	})
+	
+	// 分享
+	const regionss = uni.getStorageSync("user")
+	onShareAppMessage(() => {
+		return {
+			title: "AI绘图仙",
+			path: '/pages/index/index?share=' + regionss.id,
+			success: res => {},
+			fail: err => {}
+		};
 	})
 </script>
 
@@ -112,21 +139,24 @@
 				margin: 0 28rpx;
 			}
 		}
-		.list_btn{
+
+		.list_btn {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			box-sizing: border-box;
-			border:none;
+			border: none;
 			background-color: #F8F8F8;
 			margin: 0;
 			padding: 0;
+
 			.img {
 				margin: 0 28rpx;
 			}
 		}
-		.list_btn::after{
-			border:none;
+
+		.list_btn::after {
+			border: none;
 		}
 
 		.nr {

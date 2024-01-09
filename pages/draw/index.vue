@@ -140,7 +140,7 @@
 		onMounted,
 		ref
 	} from 'vue';
-	const popup = ref < any > (null);
+	const popup = ref(null);
 
 	const DrawStore = useDrawStore()
 	DrawStore.init()

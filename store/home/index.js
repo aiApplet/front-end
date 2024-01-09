@@ -19,7 +19,7 @@ export const useHomeStore = defineStore('home', {
 				sign_in: false
 			},
 			list: [{
-					name: '积分记录',
+					name: '积分明细',
 					icon: 'empty-history',
 					url: '/pages/home/IntegralRecord'
 				},
@@ -29,14 +29,16 @@ export const useHomeStore = defineStore('home', {
 				},
 				{
 					name: '卡密兑换',
-					icon: 'gift-fill'
+					icon: 'gift-fill',
+					url: '/pages/home/exchange'
 				},
 				{
 					name: '绘图记录',
-					icon: 'photo-fill'
+					icon: 'photo-fill',
+					url: '/pages/home/DrawingRecords'
 				},
 				{
-					name: '分享记录',
+					name: '分享',
 					icon: 'account-fill'
 				}
 			]
@@ -48,7 +50,12 @@ export const useHomeStore = defineStore('home', {
 				this.userinfo = res.data.result
 			})
 		},
-		changeAvatar(){
+		junp(e) {
+			uni.navigateTo({
+				url: e
+			})
+		},
+		changeAvatar() {
 			uni.chooseImage({
 				success(res) {
 					console.log(res);

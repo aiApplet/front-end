@@ -3,7 +3,7 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "AI绘图仙",
         "enablePullDownRefresh": false,
         "navigationStyle": "custom"
       }
@@ -31,10 +31,40 @@
       }
     },
     {
-    	"path" : "pages/home/IntegralRecord",
+      "path": "pages/home/IntegralRecord",
+      "style": {
+        "navigationBarTitleText": "积分明细",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/home/userinfo",
+      "style": {
+        "navigationBarTitleText": "个人中心",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+    	"path" : "pages/home/DrawingRecords",
     	"style" : 
     	{
-    		"navigationBarTitleText" : "",
+    		"navigationBarTitleText" : "绘图记录",
+    		"enablePullDownRefresh" : false
+    	}
+    },
+    {
+    	"path" : "pages/home/DrawingInfo",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "绘图详情",
+    		"enablePullDownRefresh" : false
+    	}
+    },
+    {
+    	"path" : "pages/home/exchange",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "卡密兑换",
     		"enablePullDownRefresh" : false
     	}
     }

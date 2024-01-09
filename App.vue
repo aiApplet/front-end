@@ -4,10 +4,12 @@
 		ref
 	} from 'vue';
 	import {
-		user
+		user,
+		getuser
 	} from '@/utils/all.js'
 	export default {
-		onLaunch: async function() {
+		onLaunch: async function(e) {
+			console.log(e);
 			const {
 				proxy
 			} = getCurrentInstance();
@@ -15,15 +17,27 @@
 			uni.login({
 				provider: "weixin",
 				success: function(res) {
-					user({
+					const per = {
 						code: res.code
-					}).then(res => {
+					}
+					// 邀请人id
+					if(e.query.share){
+						per.parent_id = e.query.share
+					}
+					user(per).then(res => {
 						uni.setStorage({
 							key: "userinfo",
 							data: res.data.result,
 							success() {
 								proxy.$isResolve();
 							}
+						})
+						getuser().then(res=>{
+							uni.setStorage({
+								key: "user",
+								data: res.data.result,
+								success() {}
+							})
 						})
 					})
 				},

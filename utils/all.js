@@ -6,6 +6,24 @@ import {
 
 
 
+export function rechargeable_card(config) {
+	return postRequest({
+		url: 'api/rechargeable_card/',
+		method: 'get',
+		data: config
+	})
+}
+
+export function cuser(config) {
+	return postRequest({
+		url: 'api/user/' + config.id + '/',
+		method: 'put',
+		data: {
+			nickname: config.nickname,
+			avatar: config.avatar
+		}
+	})
+}
 
 export function aliyun_oss_token(config) {
 	return postRequest({
@@ -87,6 +105,14 @@ export function pictures(config) {
 	})
 }
 
+export function picturesId(config) {
+	return myRequest({
+		url: 'api/pictures/',
+		method: 'get',
+		data: config
+	})
+}
+
 export function draw(config) {
 	return postRequest({
 		url: 'api/draw/',
@@ -102,3 +128,4 @@ export function signin(config) {
 		data: config
 	})
 }
+

@@ -45,6 +45,10 @@ export const useIndexStore = defineStore('index', {
 				this.swiperList = res.data.result
 			})
 		},
+		// 筛选
+		popupOpen(popup){
+			popup.value.open()
+		},
 		imgshow(e){
 			uni.previewImage({
 				urls: [e.image],
