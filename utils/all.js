@@ -9,7 +9,7 @@ import {
 
 export function delet_user_like(config) {
 	return postRequest({
-		url: 'api/user_like/'+config.id+'/',
+		url: 'api/user_like/',
 		method: 'delete',
 		data: config
 	})

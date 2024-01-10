@@ -36,7 +36,7 @@
 							<uv-icon name="file-text" color="#797979" size="16"></uv-icon>
 							<p class="item ri">{{ item2.comment_count }}</p>
 							<uv-icon :name="item2.is_like? 'heart-fill':'heart'"
-								:color="item2.is_like? '#ff5500':'#797979'" size="16"></uv-icon>
+								:color="item2.is_like? '#ff0000':'#797979'" size="16"></uv-icon>
 							<p class="item">{{ item2.like_count }}</p>
 						</view>
 					</view>

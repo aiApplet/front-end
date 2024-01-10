@@ -25,7 +25,7 @@ export const usePictureDetailsStore = defineStore('pictureDetails', {
 			page: 1,
 			CommentList: [],
 			keyheight: 0,
-			inputValue:''//评论内容
+			inputValue: '' //评论内容
 		}
 	},
 	actions: {
@@ -55,7 +55,7 @@ export const usePictureDetailsStore = defineStore('pictureDetails', {
 				// 安卓
 			}
 		},
-		showimg(){
+		showimg() {
 			uni.previewImage({
 				urls: [this.DrawingInfo.image],
 				current: 0
@@ -73,30 +73,41 @@ export const usePictureDetailsStore = defineStore('pictureDetails', {
 			})
 		},
 		// 发布评论
-		send(){
+		send() {
+
 			set_user_comment({
-				content:this.inputValue,
-				history:this.DrawingInfo.id
-			}).then(res=>{
-				
+				content: this.inputValue,
+				history: this.DrawingInfo.id
+			}).then(res => {
+				if (res.data.code == 0) {
+					uni.showToast({
+						title: '评论成功',
+						duration: 2000
+					});
+					this.inputValue = ''
+					this.CommentList.unshift(res.data.result)
+					this.DrawingInfo.comment_count += 1
+				}
 			})
 		},
 		// 爱心
-		like(){
-			if(this.DrawingInfo.is_like){
+		like() {
+			if (this.DrawingInfo.is_like) {
 				delet_user_like({
-					id:this.DrawingInfo.id
-				}).then(res=>{
-					if(res.data.code==0){
-						this.DrawingInfo.is_like=!this.DrawingInfo.is_like
+					history: this.DrawingInfo.id
+				}).then(res => {
+					if (res.data.code == 0) {
+						this.DrawingInfo.is_like = !this.DrawingInfo.is_like
+						this.DrawingInfo.like_count -= 1
 					}
 				})
-			}else{
+			} else {
 				user_like({
-					history:this.DrawingInfo.id
-				}).then(res=>{
-					if(res.data.code==0){
-						this.DrawingInfo.is_like=!this.DrawingInfo.is_like
+					history: this.DrawingInfo.id
+				}).then(res => {
+					if (res.data.code == 0) {
+						this.DrawingInfo.is_like = !this.DrawingInfo.is_like
+						this.DrawingInfo.like_count += 1
 					}
 				})
 			}

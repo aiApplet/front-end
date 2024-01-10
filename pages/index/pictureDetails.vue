@@ -33,7 +33,16 @@
 				<uv-empty text="无评论记录" mode="history"></uv-empty>
 			</view>
 			<view class="list" v-else>
-				
+				<view class="listbox" v-for="(item,index) in Store.CommentList">
+					<image class="head" :src="item.avatar" mode="aspectFill"></image>
+					<view class="nr">
+						<p class="name">{{item.nickname}}</p>
+						<p class="gm">{{item.content}}</p>
+					</view>
+					<view class="time">
+						{{item.create_time}}
+					</view>
+				</view>
 			</view>
 			<!-- :style="{bottom:Store.keyheight}" -->
 			<view class="bottom" :style="{bottom:Store.keyheight}">
@@ -44,7 +53,8 @@
 					</view>
 				</view>
 				<view class="likeicon" @click="Store.like()">
-					<uv-icon name="heart-fill" color="#dcdcdc" size="26"></uv-icon>
+					<uv-icon :name="Store.DrawingInfo.is_like? 'heart-fill':'heart'"
+						:color="Store.DrawingInfo.is_like? '#ff0000':'#dcdcdc'" size="26"></uv-icon>
 				</view>
 			</view>
 		</view>
@@ -132,7 +142,56 @@
 		justify-content: center;
 	}
 	.list{
+		width: 100vw;
+		.listbox {
+			
+			width: 90%;
+			display: flex;
+			align-items: flex-start;
+			margin: 0 auto;
+			margin-bottom: 20rpx;
+			justify-content: space-between;
+			background-color: white;
+			border-radius: 20rpx;
+			box-sizing: border-box;
+			padding: 20rpx 20rpx;
+			position: relative;
+			.head{
+				width: 88rpx;
+				background-color: #f1f1f1;
+				border-radius: 50%;
+				height: 88rpx;
+			}
+			.nr {
+				flex: 1;
+				display: flex;
+				justify-content: space-between;
+				margin-left: 18rpx;
+				flex-direction: column;
 		
+				.name {
+					font-size: 28rpx;
+					color: #5BB6EA
+				}
+		
+				.gm {
+					margin-top: 10rpx;
+					font-size: 28rpx;
+					line-height: 40rpx;
+					width: 500rpx;
+				}
+			}
+		
+			.time {
+				position: absolute;
+				width: 210rpx;
+				font-size: 20rpx;
+				font-weight: 400;
+				color: #999999;
+				top: 20rpx;
+				right: 20rpx;
+			}
+		}
 	}
 	.con {
 		width: 100vw;
