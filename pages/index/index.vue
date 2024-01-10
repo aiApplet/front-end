@@ -1,16 +1,15 @@
 <template>
-	<view class="navbar" :style="{height:IndexStore.BarHeight+IndexStore.navBareight +'px'}">
-		<!-- <view class="narbar-content" :style="{height:IndexStore.navBareight+'px'}">
+	<!-- <view class="navbar" :style="{height:IndexStore.BarHeight+IndexStore.navBareight +'px'}"> -->
+	<!-- <view class="narbar-content" :style="{height:IndexStore.navBareight+'px'}">
       <uv-icon name="search" size="28" color="#444548"></uv-icon>
     </view> -->
-	</view>
+	<!-- </view> -->
 	<swiper class="swiper" :indicator-dots="false" :autoplay="true" circular="true" :interval="3000" :duration="1000">
 		<swiper-item v-for="(e,i) in IndexStore.swiperList" :key="i" @click="IndexStore.link(e.link)">
 			<view class="swiper-item" :style="{backgroundImage:'url('+e.image+')'}"></view>
 		</swiper-item>
 	</swiper>
 	<view class="screen" :style="{'top':BarHeight+IndexStore.navBareight+'px'}">
-		<view @click="IndexStore.Refresh">刷新</view>
 		<view :class="[{'text-select':IndexStore.styles_index!=null},'text']" @click="popupOpen()">
 			<p class="name">筛选</p>
 			<uv-icon name="arrow-down" size="15" :color="IndexStore.styles_index!=null?'#3c9cff':'#a1a1a1'"></uv-icon>
@@ -21,19 +20,23 @@
 			<view v-for="(item,index) in IndexStore.data.column" :key="index" class="waterfalls-flow-column"
 				:style="{'width':IndexStore.w,'margin-left':index==0?0:IndexStore.m}"
 				:id="`waterfalls_flow_column_${index+1}`">
-				<view class="column-value" @click="IndexStore.imgshow(item2)"
+				<view class="column-value" @click="imgshow(item2)"
 					v-for="(item2,index2) in IndexStore.data[`column_${index+1}`]" :key="index2">
 					<image :src="item2.image" mode="widthFix" @load="IndexStore.imgLoad(item2)"
 						@error="IndexStore.imgError(item2)" class="imgsty"></image>
+					<view class="img-prompt">
+						{{item2.config.prompt}}
+					</view>
 					<view class="introduce">
 						<view class="user">
 							<image class="avatar" :src="item2.avatar" mode="aspectFill"></image>
 							<p class="nickname">{{ item2.nickname }}</p>
 						</view>
 						<view class="count">
-							<uv-icon name="eye" color="#797979" size="16"></uv-icon>
+							<uv-icon name="file-text" color="#797979" size="16"></uv-icon>
 							<p class="item ri">{{ item2.comment_count }}</p>
-							<uv-icon name="heart" color="#797979" size="16"></uv-icon>
+							<uv-icon :name="item2.is_like? 'heart-fill':'heart'"
+								:color="item2.is_like? '#ff5500':'#797979'" size="16"></uv-icon>
 							<p class="item">{{ item2.like_count }}</p>
 						</view>
 					</view>
@@ -73,14 +76,19 @@
 		onReachBottom,
 		onLoad,
 		onShareAppMessage,
-		onShareTimeline
+		onShareTimeline,
+		onPullDownRefresh
 	} from '@dcloudio/uni-app'
 	import {
 		useIndexStore
-	} from '@/store/index'
+	} from '@/store/index/index'
+	import {
+		usePictureDetailsStore
+	} from '@/store/index/pictureDetails'
 
 	const popup = ref(null);
 	const IndexStore = useIndexStore()
+	const Store = usePictureDetailsStore()
 	IndexStore.getconfiguration()
 
 	onLoad(async (options) => {
@@ -96,6 +104,16 @@
 	onReachBottom(() => {
 		IndexStore.Bottoming(0);
 	})
+	// 下拉刷新
+	onPullDownRefresh(() => {
+		IndexStore.Refresh()
+	})
+	let imgshow = function(e) {
+		Store.init(e)
+		uni.navigateTo({
+			url: '/pages/index/pictureDetails'
+		})
+	}
 	let popupOpen = function() {
 		popup.value.open()
 	}
@@ -227,7 +245,9 @@
 		width: 730rpx;
 		height: 300rpx;
 		margin: 0 auto;
+		background-color: #eaeaea;
 		margin-top: 10rpx;
+		border-radius: 20rpx;
 
 		.swiper-item {
 			background-repeat: no-repeat;
@@ -235,7 +255,7 @@
 			background-size: cover;
 			width: 730rpx;
 			height: 300rpx;
-			background-color: #dcdcdc;
+			background-color: #eaeaea;
 			border-radius: 20rpx;
 		}
 	}
@@ -319,6 +339,19 @@
 			to {
 				opacity: 1;
 			}
+		}
+
+		.img-prompt {
+			width: 100%;
+			box-sizing: border-box;
+			padding: 0 15rpx;
+			font-size: 24rpx;
+			color: #797979;
+			word-break: break-all;
+			display: -webkit-box;
+			-webkit-line-clamp: 1;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
 		}
 
 		.introduce {

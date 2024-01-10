@@ -2,8 +2,8 @@
 	<view class="container">
 		<view class="prompt_box">
 			<p class="title">提示词（Prompt）</p>
-			<textarea class="textarea" @input="input" maxlength="10000" confirm-type="done" :value="DrawStore.prompt"
-				name="" id="" placeholder="输入你想要的内容,支持中英文,用逗号分割." cols="30" rows="10"></textarea>
+			<textarea class="textarea" @input="input" maxlength="10000" confirm-type="done" 
+				name="" id="" placeholder="输入你想要的内容,支持中英文,用逗号分割." v-model="DrawStore.prompt" cols="30" rows="10"></textarea>
 			<view class="Number">
 				<p>{{DrawStore.prompt.length}}/1000</p>
 			</view>

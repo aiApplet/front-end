@@ -4,8 +4,13 @@
       "path": "pages/index/index",
       "style": {
         "navigationBarTitleText": "AI绘图仙",
-        "enablePullDownRefresh": false,
-        "navigationStyle": "custom"
+        "enablePullDownRefresh": true,
+		"app-plus": {
+			"pullToRefresh": {
+				"support": true,
+				"style": "circle"
+			}
+		}
       }
     },
     {
@@ -65,6 +70,14 @@
     	"style" : 
     	{
     		"navigationBarTitleText" : "卡密兑换",
+    		"enablePullDownRefresh" : false
+    	}
+    },
+    {
+    	"path" : "pages/index/pictureDetails",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "AI绘图详情",
     		"enablePullDownRefresh" : false
     	}
     }

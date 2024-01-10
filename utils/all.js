@@ -6,6 +6,40 @@ import {
 
 
 
+
+export function delet_user_like(config) {
+	return postRequest({
+		url: 'api/user_like/'+config.id+'/',
+		method: 'delete',
+		data: config
+	})
+}
+
+export function user_like(config) {
+	return postRequest({
+		url: 'api/user_like/',
+		method: 'post',
+		data: config
+	})
+}
+
+
+export function set_user_comment(config) {
+	return postRequest({
+		url: 'api/user_comment/',
+		method: 'post',
+		data: config
+	})
+}
+
+export function user_comment(config) {
+	return myRequest({
+		url: 'api/user_comment/',
+		method: 'get',
+		data: config
+	})
+}
+
 export function rechargeable_card(config) {
 	return postRequest({
 		url: 'api/rechargeable_card/',

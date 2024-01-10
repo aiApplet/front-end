@@ -1,5 +1,8 @@
 <template>
 	<view>
+		<view class="tips" v-if="Store.list.length==0">
+			<uv-empty mode="history"></uv-empty>
+		</view>
 		<view class="list" v-for="(item,index) in Store.list">
 			<view class="list-left">
 				<p class="remark">{{item.remark}}</p>
@@ -27,6 +30,15 @@
 
 
 <style scoped lang="scss">
+	.tips{
+		width: 100%;
+		height: 100vh;
+		box-sizing: border-box;
+		padding-top: 250rpx;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+	}
 	.list{
 		width: 90vw;
 		margin: 0 auto;

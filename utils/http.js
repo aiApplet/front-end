@@ -31,7 +31,7 @@ export const myRequest = (options) => {
 									code: res.code
 								}
 							}).then(res => {
-								resolve(res)
+								myRequest(options)
 							})
 						}
 					})
@@ -81,7 +81,7 @@ export const postRequest = (options) => {
 									code: res.code
 								}
 							}).then(res => {
-								resolve(res)
+								postRequest(options)
 							})
 						}
 					})
@@ -113,6 +113,10 @@ export const login = (options) => {
 			},
 			success: (res) => {
 				if (res.data.code == 0) {
+					uni.setStorage({
+						key: "userinfo",
+						data: res.data.result
+					})
 					resolve(res)
 				} else {
 					uni.showToast({

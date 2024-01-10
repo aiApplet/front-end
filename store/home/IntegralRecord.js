@@ -8,18 +8,19 @@ import {
 export const useIntegralRecordStore = defineStore('IntegralRecord', {
 	state: () => {
 		return {
-			page:1,
-			list:[]
+			page: 1,
+			list: []
 		}
 	},
 	actions: {
 		init() {
 			account_record({
-				page:this.page,
-				size:20
-			}).then(res=>{
+				page: this.page,
+				size: 20
+			}).then(res => {
 				this.list = res.data.result.results
 			})
+			
 		},
 	}
 })

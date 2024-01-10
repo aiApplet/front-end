@@ -82,12 +82,6 @@ export const useIndexStore = defineStore('index', {
 		popupOpen(popup) {
 			popup.value.open()
 		},
-		imgshow(e) {
-			uni.previewImage({
-				urls: [e.image],
-				current: 0
-			});
-		},
 		// 刷新展示列表
 		Refresh() {
 			this.page = 1
@@ -99,6 +93,7 @@ export const useIndexStore = defineStore('index', {
 			}).then(res => {
 				this.data.list = res.data.result.results
 				this.initValue(0);
+				uni.stopPullDownRefresh()
 			})
 		},
 		getconfiguration() {
