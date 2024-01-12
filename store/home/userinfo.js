@@ -14,7 +14,6 @@ export const useUserinfoStore = defineStore('userinfo', {
 				avatar: '',
 				nickname: '',
 				balance: 0,
-				id: 0,
 				shares_count: 0,
 				draw_count: 0,
 				sign_in: false

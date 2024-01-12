@@ -82,7 +82,7 @@
 		</view>
 		<view class="generate">
 			<view class="btn" @click="DrawStore.draw()" v-if="DrawStore.resultImg.length==0">
-				立即生成
+				立即生成（1积分）
 			</view>
 			<view class="btns" @click="DrawStore.imgyl()" v-if="DrawStore.resultImg.length!=0">
 				查看图片
