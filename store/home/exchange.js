@@ -2,6 +2,7 @@ import {
 	defineStore,
 } from 'pinia'
 import {
+	getuser,
 	rechargeable_card
 } from '@/utils/all.js'
 
@@ -24,6 +25,12 @@ export const useExchangeStore = defineStore('exchange', {
 						title: '兑换成功',
 						duration: 2000
 					});
+					getuser().then(res=>{
+						uni.setStorage({
+							key: "user",
+							data: res.data.result,
+						})
+					})
 					setTimeout(() => {
 						uni.navigateBack()
 					}, 2000)

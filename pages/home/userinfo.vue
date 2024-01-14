@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="imgbox">
+		<view class="imgbox" @click="Store.ChangeAvatar">
 			<image class="head" :src="Store.userinfo.avatar" mode="aspectFill"></image>
 			<view class="imgbosx">
 				<image class="img" src="../../static/head.png" mode="widthFix"></image>
@@ -25,6 +25,7 @@
 	} from "@dcloudio/uni-app";
 	onShow(() => {
 		Store.init()
+    // 打印app_id
 	})
 </script>
 

@@ -61,7 +61,7 @@ export function cuser(config) {
 
 export function aliyun_oss_token(config) {
 	return postRequest({
-		url: 'api/aliyun_oss_token/',
+		url: 'api/aliyun_oss_token',
 		method: 'get',
 		data: config
 	})

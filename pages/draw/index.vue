@@ -55,8 +55,11 @@
 					<view class="icon" v-if="index==0">
 						<uv-icon name="close-circle" color="#9a9a9a" size="28"></uv-icon>
 					</view>
+          <view class="icon" v-else>
+            <uv-icon :name="item.cover" size="120"></uv-icon>
+          </view>
 					<view class="LoRAList-item-text" v-if="index!=0">
-						{{item}}
+            {{item.name}}
 					</view>
 				</view>
 				<view class="supplement" v-if="DrawStore.LoRAList.length%2==0"></view>
