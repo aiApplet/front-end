@@ -2,13 +2,13 @@
 	<view class="container">
 		<view class="prompt_box">
 			<p class="title">提示词（Prompt）</p>
-			<textarea class="textarea" @input="input" maxlength="10000" confirm-type="done" 
-				name="" id="" placeholder="输入你想要的内容,支持中英文,用逗号分割." v-model="DrawStore.prompt" cols="30" rows="10"></textarea>
+			<textarea class="textarea" @input="input" maxlength="10000" confirm-type="done" name="" id=""
+				placeholder="输入你想要的内容,支持中英文,用逗号分割." v-model="DrawStore.prompt" cols="30" rows="10"></textarea>
 			<view class="Number">
 				<p>{{DrawStore.prompt.length}}/1000</p>
 			</view>
 		</view>
-		
+
 		<view class="cueWord">
 			<p @click="DrawStore.random_prompts">随机一下</p>
 			<p @click="openpopup">提示词助手</p>
@@ -22,7 +22,7 @@
 			<view class="title">
 				<p class="bi"></p>反向提示词
 			</view>
-			<uv-switch v-model="DrawStore.switch_value" @input="DrawStore.switchInput" ></uv-switch>
+			<uv-switch v-model="DrawStore.switch_value" @input="DrawStore.switchInput"></uv-switch>
 		</view>
 		<view class="prompt_box" v-if="DrawStore.switch_value">
 			<p class="title">反向提示词（Negative prompt）</p>
@@ -42,9 +42,10 @@
 					v-for="(item,index) in DrawStore.modelList" :key="index" @click="DrawStore.modelIndexChange(index)">
 					{{item.name}}
 				</view>
-				<view class="supplement" v-if="DrawStore.modelList.length%2==0"></view>
+				<view class="supplement" v-if="DrawStore.modelList.length%2!=0"></view>
 			</view>
 		</view>
+		
 		<view class="LoRA">
 			<view class="title">
 				<p class="bi"></p>LoRA模型选择
@@ -55,11 +56,14 @@
 					<view class="icon" v-if="index==0">
 						<uv-icon name="close-circle" color="#9a9a9a" size="28"></uv-icon>
 					</view>
-          <view class="icon" v-else>
-            <uv-icon :name="item.cover" size="120"></uv-icon>
-          </view>
+					<view class="icon" :style="{backgroundImage:'url('+item.cover+')'}" v-else>
+						<!-- <uv-icon :name="item.cover" size="100"></uv-icon> -->
+					</view>
+					<!-- <view class="slider">
+						<uv-slider v-model="DrawStore.value"></uv-slider>
+					</view> -->
 					<view class="LoRAList-item-text" v-if="index!=0">
-            {{item.name}}
+						{{item.name}}
 					</view>
 				</view>
 				<view class="supplement" v-if="DrawStore.LoRAList.length%2==0"></view>
@@ -468,13 +472,14 @@
 				margin-top: 10rpx;
 			}
 		}
-		
-		.prompt{
+
+		.prompt {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 			margin-bottom: 20rpx;
 			margin-top: 10rpx;
+
 			.title {
 				.bi {
 					width: 10rpx;
@@ -483,12 +488,13 @@
 					border-radius: 10rpx;
 					margin-right: 15rpx;
 				}
-			
+
 				display: flex;
 				align-items: center;
 				font-size: 28rpx;
 			}
 		}
+
 		.prompt_box {
 			margin-bottom: 20rpx;
 			width: 100%;
@@ -599,6 +605,10 @@
 					margin-bottom: 20rpx;
 				}
 
+				.supplement {
+					width: 210rpx;
+				}
+
 				&-select {
 					background-color: white;
 					color: #3c9cff;
@@ -641,7 +651,7 @@
 
 				&-item {
 					width: 210rpx;
-					height: 160rpx;
+					// height: 160rpx;
 					overflow: hidden;
 					border-radius: 10rpx;
 					position: relative;
@@ -654,20 +664,44 @@
 					display: flex;
 					align-items: center;
 					justify-content: center;
+					flex-direction: column;
 
-					&-text {
+					.slider {
 						position: absolute;
 						left: 0;
-						bottom: 0;
+						bototm: 0;
+						width: 100%;
+						height: 50rpx;
+						background-color: #ececec;
+						box-sizing: border-box;
+						padding: 0 10rpx;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+					}
+
+					.icon {
+						width: 210rpx;
+						height: 190rpx;
+						border-radius: 10rpx;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						background-repeat: no-repeat;
+						background-position: 50% 50%;
+						background-size: cover;
+					}
+
+					&-text {
 						width: 210rpx;
 						height: 50rpx;
-						background-color: #818181;
-						color: white;
+						background-color: #f8f8f8;
+						color: #818181;
 						font-size: 24rpx;
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						opacity: 0.6;
+						opacity: 1;
 					}
 				}
 

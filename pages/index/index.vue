@@ -5,7 +5,7 @@
     </view> -->
 	<!-- </view> -->
 	<swiper class="swiper" :indicator-dots="false" :autoplay="true" circular="true" :interval="3000" :duration="1000">
-		<swiper-item v-for="(e,i) in IndexStore.swiperList" :key="i" @click="IndexStore.link(e.link)">
+		<swiper-item v-for="(e,i) in IndexStore.swiperList" :key="i" @click="IndexStore.swiperlink(e.link)">
 			<view class="swiper-item" :style="{backgroundImage:'url('+e.image+')'}"></view>
 		</swiper-item>
 	</swiper>

@@ -61,7 +61,8 @@ export const useDrawStore = defineStore('draw', {
 			promptsSelect: [], //选中辅助词
 			seed: -1,
 			resultImg: '',
-			switch_value:false
+			value: 0,
+			switch_value: false
 		}
 	},
 	actions: {
@@ -92,7 +93,7 @@ export const useDrawStore = defineStore('draw', {
 				this.promptsShowList = newlist[0].prompts
 			})
 		},
-		switchInput(e){},
+		switchInput(e) {},
 		draw() {
 			let size = this.getSize()
 			let per = {
@@ -101,6 +102,7 @@ export const useDrawStore = defineStore('draw', {
 				style: this.modelList[this.modelIndex].id,
 				width: size.x,
 				height: size.y,
+				value: 0
 			}
 			if (this.LoRAIndex != 0) {
 				per.lora = this.LoRAList[this.LoRAIndex].id
