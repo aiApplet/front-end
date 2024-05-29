@@ -71,17 +71,3 @@ manifest.json 修改微信小程序ID
 
 调试基础库 >= 3.3.1
 
-<iframe  
-    width="100%"  
-    height="450"  
-    src="//player.bilibili.com/player.html?aid=16688970&cid=27215876&page=1"  
-    scrolling="no"  
-    border="0"  
-    frameborder="no"  
-    framespacing="0"  
-    allowfullscreen="true"> 
-。 
-</iframe> 
-<video width="320" height="240" controls src="https://www.vifa.cn/resource/userfiles/fileupload/202303/1633734360076554240.m4v" type="video/mp4" > 
-
-</video> 
